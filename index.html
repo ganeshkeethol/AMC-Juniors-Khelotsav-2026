@@ -113,6 +113,14 @@
   </div>
   <p class="payment-note">After paying, please keep your transaction ID ready and enter it while registering.</p>
   <span id="payment-copy-status" class="payment-copy-status" role="status" aria-live="polite"></span>
+
+  <div class="payment-upi-row payment-upi-row-secondary">
+    <div class="payment-detail"><span>UPI ID</span><strong id="payment-upi-2"></strong></div>
+    <div class="payment-actions payment-actions-single">
+      <button id="copy-upi-btn-2" class="btn payment-copy-btn" type="button">Copy UPI ID</button>
+    </div>
+  </div>
+  <span id="payment-copy-status-2" class="payment-copy-status" role="status" aria-live="polite"></span>
 </div>
 </div><div class="steps"><div><b>01</b> Parent submits enrollment</div><div><b>02</b> Results are published live</div></div></section>
 </main>
@@ -153,13 +161,13 @@
   var status = document.getElementById('payment-copy-status');
   if (upi) upi.textContent = payment.upiId;
 
-  if (copyButton) copyButton.addEventListener('click', async function () {
+  async function copyUpiId(value, statusElement) {
     try {
       if (navigator.clipboard && window.isSecureContext) {
-        await navigator.clipboard.writeText(payment.upiId);
+        await navigator.clipboard.writeText(value);
       } else {
         var field = document.createElement('textarea');
-        field.value = payment.upiId;
+        field.value = value;
         field.style.position = 'fixed';
         field.style.opacity = '0';
         document.body.appendChild(field);
@@ -168,10 +176,24 @@
         field.remove();
         if (!copied) throw new Error('Copy unavailable');
       }
-      if (status) status.textContent = 'UPI ID copied.';
+      if (statusElement) statusElement.textContent = 'UPI ID copied.';
     } catch (error) {
-      if (status) status.textContent = 'Please copy the UPI ID manually.';
+      if (statusElement) statusElement.textContent = 'Please copy the UPI ID manually.';
     }
+  }
+
+  if (copyButton) copyButton.addEventListener('click', function () {
+    copyUpiId(payment.upiId, status);
+  });
+
+  var secondUpi = payment.upiId2 || '';
+  var secondUpiElement = document.getElementById('payment-upi-2');
+  var secondCopyButton = document.getElementById('copy-upi-btn-2');
+  var secondStatus = document.getElementById('payment-copy-status-2');
+  if (secondUpiElement && secondUpi) secondUpiElement.textContent = secondUpi;
+  if (secondCopyButton) secondCopyButton.addEventListener('click', function () {
+    if (secondUpi) copyUpiId(secondUpi, secondStatus);
+    else if (secondStatus) secondStatus.textContent = 'Please configure the second UPI ID in config.js.';
   });
 })();
 

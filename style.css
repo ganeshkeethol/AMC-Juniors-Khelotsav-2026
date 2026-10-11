@@ -2169,7 +2169,8 @@ section#register.register .steps{gap:11px;}
     margin: 14px 0 0 !important;
     text-align: center !important;
   }
-  section#register.register .registration-payment .payment-detail strong#payment-upi {
+  section#register.register .registration-payment .payment-detail strong#payment-upi,
+  .registration-payment .payment-detail strong#payment-upi-2 {
     font-size: 12px !important;
     line-height: 1.3 !important;
     letter-spacing: 0 !important;
@@ -2191,7 +2192,8 @@ section#register.register .steps{gap:11px;}
 @media(max-width:600px){
   .registration-payment .payment-upi-row{grid-template-columns:minmax(0,1fr) auto;gap:8px}
   .registration-payment .payment-upi-row .payment-detail span{font-size:13px}
-  .registration-payment .payment-upi-row .payment-detail strong#payment-upi{font-size:clamp(11px,3.2vw,13px)!important;line-height:1.25!important;overflow-wrap:anywhere;word-break:break-word}
+  .registration-payment .payment-upi-row .payment-detail strong#payment-upi,
+  .registration-payment .payment-upi-row .payment-detail strong#payment-upi-2{font-size:clamp(11px,3.2vw,13px)!important;line-height:1.25!important;overflow-wrap:anywhere;word-break:break-word}
   .registration-payment .payment-upi-row .payment-actions-single{justify-self:end;justify-content:flex-end}
   .registration-payment .payment-upi-row .payment-copy-btn{min-width:100px;max-width:124px;padding:10px 11px!important;font-size:12px!important;white-space:nowrap!important;margin-left:auto}
 }
