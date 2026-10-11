@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#123b73">
+<title>Questions &amp; Answers • AMC Juniors Khelotsav 2026</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.qa-wrap{max-width:1000px;margin:0 auto;padding:1.4rem 1rem 3rem}
+.qa-intro{color:#5d7396;max-width:760px;margin:.3rem 0 1.2rem;line-height:1.6}
+.qa-toolbar{display:flex;gap:.7rem;align-items:center;justify-content:space-between;flex-wrap:wrap;margin:1rem 0 1.2rem}
+.qa-search{flex:1 1 240px;min-width:0;padding:.8rem .95rem;border:1px solid #cdd9eb;border-radius:12px;background:#fff;color:#123b73;font:inherit}
+.qa-categories{display:flex;gap:.45rem;flex-wrap:wrap;margin:0 0 1.2rem}
+.qa-category{border:1px solid #d6e1ef;background:#fff;color:#123b73;border-radius:999px;padding:.5rem .8rem;font-weight:800;cursor:pointer}
+.qa-category.active{background:#123b73;color:#fff;border-color:#123b73}
+.qa-list{display:grid;gap:.75rem}
+.qa-item{background:#fff;border:1px solid #dce5f0;border-left:4px solid #f4c542;border-radius:15px;overflow:hidden;box-shadow:0 7px 20px rgba(18,59,115,.05)}
+.qa-question{width:100%;display:flex;align-items:center;justify-content:space-between;gap:1rem;text-align:left;border:0;background:transparent;color:#123b73;padding:1rem 1.1rem;font:inherit;font-weight:850;cursor:pointer}
+.qa-question .plus{flex:0 0 auto;font-size:1.35rem;color:#ed6a24}
+.qa-answer{padding:0 1.1rem 1rem;color:#536b8c;line-height:1.65;white-space:pre-line}
+.qa-answer[hidden]{display:none}
+.qa-category-label{display:inline-block;margin:0 1.1rem .5rem;font-size:.7rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#c26b00}
+.qa-state{padding:1.2rem;border:1px dashed #cbd8e8;border-radius:15px;background:#f8fbff;color:#5d7396;text-align:center}
+@media(max-width:560px){.qa-wrap{padding:1rem .7rem 2rem}.qa-question{padding:.85rem .8rem;font-size:.92rem}.qa-answer{padding:0 .8rem .85rem;font-size:.88rem}.qa-category-label{margin-left:.8rem}.qa-toolbar{gap:.5rem}}
+</style>
+</head>
+<body>
+<img class="site-floating-logo" src="assets/ambience-courtyard-logo-transparent.png" alt="Ambience Courtyard" aria-hidden="true">
+<header class="subhero">
+<nav><a class="brand" href="index.html"><span>AMC Juniors Khelotsav 2026</span></a><div class="subnav-actions"><a class="back-link" href="index.html">← Home</a><button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">☰</button></div></nav>
+<div id="mobile-menu" class="mobile-menu" hidden><a href="index.html#events">🎯 Events</a><a href="index.html#enrollments">👧 Kids Enrollment</a><a href="index.html#schedule">📅 Schedule</a><a href="results.html">🏆 Live Results</a><a href="qa.html">❓ Q&amp;A</a><a href="highlights-2025.html">📸 2025 Highlights</a><a href="partners.html">🤝 Event Partners</a><a href="index.html#guidelines">🛡️ Guidelines</a><a href="index.html#register">🎟️ Register</a></div>
+<div class="event-hero"><div><div class="eyebrow">HELP &amp; INFORMATION</div><h1>Questions &amp; Answers</h1><p class="lead">Find answers to common questions about AMC Juniors Khelotsav 2026.</p></div><div class="event-badge"><span>❓</span><b>Q&amp;A</b><small>Ambience Courtyard</small></div></div>
+</header>
+<main class="qa-wrap">
+<p class="qa-intro">Questions and answers are updated by the organisers through the event Google Sheet.</p>
+<div class="qa-toolbar"><input id="qa-search" class="qa-search" type="search" placeholder="Search questions…" aria-label="Search questions"><span id="qa-count" aria-live="polite"></span></div>
+<div id="qa-categories" class="qa-categories" aria-label="Filter by category"></div>
+<div id="qa-list" class="qa-list"><div class="qa-state">Loading questions and answers…</div></div>
+</main>
+<footer><div class="footer-brand"><img src="assets/apartment-logo.jpg" alt="Ambience Courtyard logo"><div><b>AMC Juniors Khelotsav 2026</b><span>Ambience Courtyard</span></div></div><span id="visitor-count" class="visitor-count" aria-label="Site visitor count">👀 Visitors: …</span><span>From <span id="footer-event-date">November 1st onwards</span> • 14 Sports &amp; Fun Events</span></footer>
+<script src="config.js"></script><script src="app.js"></script><script src="visitor-counter.js"></script>
+<script>
+(function(){
+ const list=document.getElementById('qa-list'), search=document.getElementById('qa-search'), categories=document.getElementById('qa-categories'), count=document.getElementById('qa-count');
+ let rows=[], activeCategory='All';
+ const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ function render(){
+  const term=(search.value||'').trim().toLowerCase();
+  const shown=rows.filter(r=>(activeCategory==='All'||r.category===activeCategory)&&(`${r.question} ${r.answer} ${r.category}`).toLowerCase().includes(term));
+  count.textContent=shown.length+' question'+(shown.length===1?'':'s');
+  if(!shown.length){list.innerHTML='<div class="qa-state">No questions found. Please check back later.</div>';return;}
+  list.innerHTML=shown.map((r,i)=>`<article class="qa-item"><button class="qa-question" type="button" aria-expanded="false" aria-controls="qa-answer-${i}"><span>${esc(r.question)}</span><span class="plus" aria-hidden="true">+</span></button><span class="qa-category-label">${esc(r.category)}</span><div class="qa-answer" id="qa-answer-${i}" hidden>${esc(r.answer)}</div></article>`).join('');
+  list.querySelectorAll('.qa-question').forEach(btn=>btn.addEventListener('click',()=>{const answer=btn.parentElement.querySelector('.qa-answer');const open=btn.getAttribute('aria-expanded')==='true';btn.setAttribute('aria-expanded',String(!open));answer.hidden=open;btn.querySelector('.plus').textContent=open?'+':'−';}));
+ }
+ function renderCategories(){const names=['All',...new Set(rows.map(r=>r.category).filter(Boolean))];if(!names.includes(activeCategory))activeCategory='All';categories.innerHTML=names.map(c=>`<button type="button" class="qa-category ${c===activeCategory?'active':''}" aria-pressed="${c===activeCategory}" data-category="${esc(c)}">${esc(c)}</button>`).join('');categories.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{activeCategory=b.dataset.category;renderCategories();render();}));}
+ async function load(){
+  if(!window.CONFIG||!CONFIG.apiUrl){list.innerHTML='<div class="qa-state">Q&amp;A is temporarily unavailable. Please try again later.</div>';return;}
+  try{const res=await fetch(CONFIG.apiUrl+'?action=qna&_='+Date.now(),{cache:'no-store'});if(!res.ok)throw new Error('Request failed');const data=await res.json();rows=(Array.isArray(data.questions)?data.questions:[]).map(r=>({question:String(r.question||r.Question||'').trim(),answer:String(r.answer||r.Answer||'').trim(),category:String(r.category||r.Category||'General').trim()||'General'})).filter(r=>r.question&&r.answer);if(!rows.length){list.innerHTML='<div class="qa-state">No questions have been published yet. Please check back later.</div>';categories.innerHTML='';count.textContent='0 questions';return;}renderCategories();render();}
+  catch(e){list.innerHTML='<div class="qa-state">Unable to load questions right now. Please try again later.</div>';}
+ }
+ search.addEventListener('input',render);load();
+})();
+</script>
+</body></html>

@@ -8,7 +8,7 @@ const CONFIG = {
   registrationFee: 200,
   registrationPayment: {
     enabled: true,
-    upiId: "xxxxxxxxxx@ybl",
+    upiId: "XXXXXXXXXX@ybl",
     currency: "INR",
     note: "AMC Juniors Khelotsav Registration"
   },

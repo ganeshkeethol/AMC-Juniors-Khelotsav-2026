@@ -1,0 +1,13 @@
+Q&A PAGE - GOOGLE SHEETS SETUP
+
+1. Open the spreadsheet used for the High-Level Schedule and Notifications (the ID is HIGH_LEVEL_SCHEDULE_SHEET_ID in Code.gs).
+2. Add a sheet/tab named exactly: Q&A
+3. Add these headers in row 1: Question | Answer | Category | Active | Display Order
+4. Add one question per row. Example:
+   What is the registration fee? | ₹200 per child. | Registration | Yes | 1
+   What should I do after payment? | Keep the transaction ID and enter it while registering. | Payment | Yes | 2
+5. Use Active = Yes to show a question, or No to hide it. Display Order controls the order on the website. Category is used for category filter buttons.
+6. In Apps Script, replace/update Code.gs with the updated Code.gs from this ZIP, save, then Deploy > Manage deployments > Edit > New version > Deploy. Keep the existing web app URL and access settings.
+7. Upload qa.html and the updated navigation HTML files to the GitHub Pages repository.
+
+The page reads Q&A rows through the existing Apps Script API using ?action=qna. No direct public publishing of the spreadsheet is required.

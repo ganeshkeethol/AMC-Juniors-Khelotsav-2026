@@ -11,6 +11,7 @@ const ENROLLMENTS_SHEET_ID = "1jNGv0dkXPlYtscD2c9JY0QUbYf2iKDJxDUfMrkPsuIs";
 const HIGH_LEVEL_SCHEDULE_SHEET_ID = "1lgxqiyJtbYeVRdVcSxIXkRcR5Sk7ng4aw2RpR95AYKM";
 const HIGH_LEVEL_SCHEDULE_TAB = "Schedule";
 const NOTIFICATIONS_TAB = "Notifications";
+const QA_TAB = "Q&A";
 
 // Create a separate Google Sheet for the public site visitor counter.
 const VISITOR_STATS_SHEET_ID = "1S0atryLkUYAQFYihyDqu8zi024dcgsV5Tzcs4g3gDoc";
@@ -60,6 +61,10 @@ function doGet(e) {
 
     if (action === "notifications") {
       return jsonOutput({success:true, notifications:getNotifications_()});
+    }
+
+    if (action === "qna" || action === "qa") {
+      return jsonOutput({success:true, questions:getQandA_()});
     }
 
     if (action === "partners" || action === "eventPartners") {
@@ -261,6 +266,27 @@ function getNotifications_() {
     }).sort(function(a, b) {
       return a.displayOrder - b.displayOrder;
     });
+  } catch (error) {
+    return [];
+  }
+}
+
+function getQandA_() {
+  if (!HIGH_LEVEL_SCHEDULE_SHEET_ID || HIGH_LEVEL_SCHEDULE_SHEET_ID.indexOf("PASTE_") === 0) return [];
+  try {
+    const ss = SpreadsheetApp.openById(HIGH_LEVEL_SCHEDULE_SHEET_ID);
+    const sheet = ss.getSheetByName(QA_TAB);
+    if (!sheet) return [];
+    return sheetToObjects_(sheet).map(function(r, idx) {
+      const question = String(r.Question || r.question || r.Q || "").trim();
+      const answer = String(r.Answer || r.answer || r.A || "").trim();
+      const category = String(r.Category || r.category || "General").trim() || "General";
+      const active = String(r.Active || r.active || "Yes").trim();
+      const displayOrder = Number(r["Display Order"] || r.Order || idx + 1) || (idx + 1);
+      return {question:question, answer:answer, category:category, active:active, displayOrder:displayOrder};
+    }).filter(function(item) {
+      return item.question !== "" && item.answer !== "" && /^(yes|true|1)$/i.test(item.active);
+    }).sort(function(a, b) { return a.displayOrder - b.displayOrder; });
   } catch (error) {
     return [];
   }
