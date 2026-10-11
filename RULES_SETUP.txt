@@ -1,0 +1,50 @@
+AMC JUNIORS KHELOTSAV 2026 — RULES & REGULATIONS SETUP
+
+Google Sheet
+Use the existing High-Level Schedule spreadsheet configured by HIGH_LEVEL_SCHEDULE_SHEET_ID. Create a new tab named exactly: Rules
+
+Row 1 headers (exactly):
+Audience | Category | Rule | Active | Display Order
+
+Audience values: General, Participant, Volunteer.
+Category is a short heading such as Attendance, Child Safety, Fair Play, Communication, Emergency Handling, or Venue Care.
+Rule is the rule/guideline text to display.
+Active should be Yes to show the row; use No to hide it.
+Display Order is a number used to order the published rules.
+
+Suggested starter rows:
+General | Safety | Follow the instructions of the event coordinators and report injuries or unsafe situations immediately. | Yes | 1
+General | Respect | Treat children, parents, volunteers, and organisers respectfully. | Yes | 2
+Participant | Eligibility | Participate only in the age group and events for which you are eligible. Follow the instructions of event officials. | Yes | 3
+Participant | Fair Play | Follow the rules of each sport, respect officials' decisions, and avoid unsporting behaviour. | Yes | 4
+Participant | Safety | Children must remain with their parent/guardian or designated volunteer when not competing. | Yes | 5
+Participant | Venue Care | Respect the venue and equipment; dispose of waste in designated bins. | Yes | 6
+Volunteer | Attendance | Report at the assigned time. Inform the volunteer coordinator promptly if you cannot attend or will be delayed. | Yes | 7
+Volunteer | Responsibilities | Understand your assigned duty, venue, schedule, and reporting coordinator before activities begin. | Yes | 8
+Volunteer | Child Safety | Never leave a child unattended in your assigned area. Escalate any child-safety concern immediately to the designated coordinator. | Yes | 9
+Volunteer | Fairness | Treat all participants equally. Do not favour participants or change schedules, scores, or results without authorisation. | Yes | 10
+Volunteer | Communication | Direct parent questions or complaints to the appropriate event coordinator; communicate calmly and respectfully. | Yes | 11
+Volunteer | Emergency Handling | Immediately inform the designated coordinator about injuries, missing children, or unsafe situations. Do not make promises or announcements outside your role. | Yes | 12
+Volunteer | Confidentiality | Do not publicly share children's personal information, contact details, or photos/videos without appropriate permission. | Yes | 13
+Volunteer | Closing Duties | Help return event equipment and leave the assigned area clean when released by the coordinator. | Yes | 14
+
+Additional General Guidelines and Age Eligibility rows to add to the Rules tab (keep Active = Yes). Add these in addition to the starter rows above so the Rules page contains the complete guidelines that previously appeared on the home page:
+General | Age Group Eligibility | 4–6 years: November 2020 – 31 October 2022 | Yes | 20
+General | Age Group Eligibility | 6–8 years: November 2018 – 31 October 2020 | Yes | 21
+General | Age Group Eligibility | 8–10 years: November 2016 – 31 October 2018 | Yes | 22
+General | Age Group Eligibility | 10–12 years: November 2014 – 31 October 2016 | Yes | 23
+General | Age Group Eligibility | 12–14 years: November 2012 – 31 October 2014 | Yes | 24
+General | Age Group Eligibility | 14–16 years: November 2010 – 31 October 2012 | Yes | 25
+General | Age Group Eligibility | 16–18 years: November 2008 – 31 October 2010 | Yes | 26
+General | Parent & Child Safety | Parents/guardians should remain reachable during the event. Children must follow volunteer instructions. Inform organisers privately about relevant allergies or safety requirements. | Yes | 27
+General | Reporting & Punctuality | Participants should report at least 15 minutes before their event unless the schedule says otherwise. Late arrival may affect participation if an event has started. Check the website and schedule for changes. | Yes | 28
+General | Dress & Equipment | Wear comfortable sports clothing and suitable footwear. Bring only the equipment requested for the event. Label personal belongings where practical. | Yes | 29
+General | Fair Play & Behaviour | Respect participants, volunteers, referees, and organisers. Bullying, abusive language, cheating, and deliberately unsafe behaviour are not allowed. Celebrate participation and effort as well as results. | Yes | 30
+General | Health & Hydration | Bring water and take breaks when required. Tell a volunteer immediately if a child feels unwell or is injured. Follow venue-specific safety instructions. | Yes | 31
+General | Photos & Privacy | Event photography must follow community consent arrangements. Do not publish another child's personal information. Public result displays should use only approved participant information. | Yes | 32
+
+Google Apps Script
+The included Code.gs adds the action=rules endpoint. Paste/merge it into the Apps Script project used by config.js, then Deploy > Manage deployments > Edit > New version > Deploy. The website cannot fetch live rules until the new script version is deployed and the Rules tab exists.
+
+Website
+Upload rules.html and the updated index.html, event.html, qa.html, results.html, partners.html, highlights-2025.html, Code.gs as appropriate. Main navigation and the volunteer registration area link to the Rules page.

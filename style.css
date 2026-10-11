@@ -2285,3 +2285,39 @@ section#register.register .steps{gap:11px;}
     font-size: 12px !important;
   }
 }
+
+/* Mobile: keep Volunteer Rules & Responsibilities as compact as Register as Volunteer */
+@media (max-width:700px){
+  section.volunteer-registration-section .volunteer-rules-btn{
+    display:flex !important;
+    width:100% !important;
+    min-height:32px !important;
+    box-sizing:border-box !important;
+    align-items:center !important;
+    justify-content:center !important;
+    text-align:center !important;
+    white-space:normal !important;
+    font-family:Nunito,Arial,sans-serif !important;
+    font-size:10.5px !important;
+    line-height:1.2 !important;
+    font-weight:900 !important;
+    padding:8px 9px !important;
+    margin-top:10px !important;
+    border-radius:14px !important;
+    background:linear-gradient(135deg,#f47a20,#d9283e) !important;
+    color:#fff !important;
+    box-shadow:0 10px 24px rgba(228,75,37,.30) !important;
+  }
+}
+
+
+/* Compact home-page link to the full Google-Sheets-powered guidelines page */
+.guidelines-cta-section{padding-top:22px!important;padding-bottom:26px!important}
+.guidelines-cta{display:flex;align-items:center;gap:18px;max-width:1220px;margin:0 auto;padding:22px 24px;background:linear-gradient(115deg,#fff 0%,#f2f7ff 100%);border:1px solid #dbe7f5;border-radius:20px;box-shadow:0 10px 28px rgba(18,59,115,.07)}
+.guidelines-cta-icon{width:54px;height:54px;flex:0 0 54px;display:grid;place-items:center;background:#fff0bf;border-radius:16px;font-size:27px}
+.guidelines-cta-copy{flex:1;min-width:0}
+.guidelines-cta-copy small{font-size:10px;font-weight:900;letter-spacing:1.4px;color:#d97706}
+.guidelines-cta-copy h2{font:800 27px 'Baloo 2';color:var(--navy);margin:2px 0 3px}
+.guidelines-cta-copy p{font-size:13px;line-height:1.5;color:var(--muted);margin:0;max-width:760px}
+.guidelines-cta-button{white-space:nowrap;display:inline-flex;align-items:center;gap:9px}
+@media(max-width:650px){.guidelines-cta-section{padding-top:12px!important;padding-bottom:16px!important}.guidelines-cta{align-items:flex-start;gap:12px;padding:16px;border-radius:16px;flex-wrap:wrap}.guidelines-cta-icon{width:42px;height:42px;flex-basis:42px;border-radius:12px;font-size:22px}.guidelines-cta-copy{width:calc(100% - 54px);flex:1}.guidelines-cta-copy h2{font-size:21px;line-height:1.15}.guidelines-cta-copy p{font-size:12px}.guidelines-cta-button{width:100%;justify-content:center;padding:11px 14px}}

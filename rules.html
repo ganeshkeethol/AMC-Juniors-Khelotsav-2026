@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#123b73">
+<title>Rules &amp; Regulations • AMC Juniors Khelotsav 2026</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.rules-wrap{max-width:1000px;margin:0 auto;padding:.8rem 1rem 1.5rem}.rules-intro{color:#5d7396;line-height:1.65;margin:.25rem 0 1.2rem;max-width:780px}.rules-tabs{display:flex;gap:.55rem;flex-wrap:wrap;margin:1rem 0 1.2rem}.rules-tab{border:1px solid #d6e1ef;background:#fff;color:#123b73;border-radius:999px;padding:.65rem 1rem;font:inherit;font-weight:800;cursor:pointer}.rules-tab.active{background:#123b73;color:#fff;border-color:#123b73}.rules-group{max-width:none!important;margin:.75rem 0 1rem!important;padding:0!important;background:transparent!important}.rules-group h2{color:#123b73;font-size:1.2rem;margin:.25rem 0 .55rem}.rules-list{display:grid;gap:.55rem}.rule-card{display:flex;gap:.8rem;align-items:flex-start;background:#fff;border:1px solid #dce5f0;border-left:4px solid #f4c542;border-radius:14px;padding:1rem;box-shadow:0 7px 20px rgba(18,59,115,.05)}.rule-number{flex:0 0 2rem;height:2rem;display:grid;place-items:center;border-radius:50%;background:#eaf2ff;color:#123b73;font-weight:900}.rule-card h3{font-size:1rem;color:#123b73;margin:0 0 .25rem}.rule-card p{color:#536b8c;line-height:1.65;margin:0;white-space:pre-line}.rules-state{padding:1.2rem;border:1px dashed #cbd8e8;border-radius:15px;background:#f8fbff;color:#5d7396;text-align:center}.rules-note{margin-top:1.2rem;padding:1rem;border-radius:12px;background:#fff7df;border:1px solid #f4d778;color:#735314;line-height:1.6}
+@media(max-width:560px){
+.rules-wrap{padding:1rem .7rem 2rem}
+.rules-intro{font-size:.88rem;line-height:1.6;margin:.25rem 0 1rem}
+.rules-tabs{gap:.45rem;margin:.8rem 0 1rem}
+.rules-tab{padding:.5rem .8rem;font-size:.88rem}
+.rules-group h2{font-size:1rem;margin:.2rem 0 .5rem}
+.rules-list{gap:.65rem}
+.rule-card{padding:.85rem .8rem;gap:.6rem;border-radius:14px}
+.rule-number{flex:0 0 1.7rem;height:1.7rem;font-size:.88rem}
+.rule-card h3{font-size:.92rem;line-height:1.35;margin:0 0 .2rem}
+.rule-card p{font-size:.88rem;line-height:1.55}
+.rules-state{font-size:.88rem;padding:1rem}
+.rules-note{font-size:.88rem;line-height:1.55;margin-top:1rem;padding:.85rem}
+}
+.rules-wrap section.rules-group{max-width:none!important;margin:.75rem 0 1rem!important;padding:0!important;background:transparent!important}.rules-wrap .rule-card{margin:0!important}
+</style>
+</head>
+<body>
+<img class="site-floating-logo" src="assets/ambience-courtyard-logo-transparent.png" alt="Ambience Courtyard" aria-hidden="true">
+<header class="subhero"><nav><a class="brand" href="index.html"><span>AMC Juniors Khelotsav 2026</span></a><div class="subnav-actions"><a class="back-link" href="index.html">← Home</a><button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">☰</button></div></nav>
+<div id="mobile-menu" class="mobile-menu" hidden><a href="index.html#events">🎯 Events</a><a href="index.html#enrollments">👧 Kids Enrollment</a><a href="index.html#schedule">📅 Schedule</a><a href="results.html">🏆 Live Results</a><a href="qa.html">❓ Q&amp;A</a><a href="rules.html">📋 Rules &amp; Regulations</a><a href="highlights-2025.html">📸 2025 Highlights</a><a href="partners.html">🤝 Event Partners</a><a href="index.html#guidelines">🛡️ Guidelines</a><a href="index.html#register">🎟️ Register</a></div>
+<div class="event-hero"><div><div class="eyebrow">EVENT INFORMATION</div><h1>Rules &amp; Regulations</h1><p class="lead">Clear guidelines for participants, parents, and volunteers at AMC Juniors Khelotsav 2026.</p></div><div class="event-badge"><span>📋</span><b>Rules</b><small>Ambience Courtyard</small></div></div></header>
+<main class="rules-wrap"><p class="rules-intro">Please read the relevant guidelines before participating or volunteering. Organisers can maintain the published rules through the event Google Sheet.</p>
+<div class="rules-tabs" role="tablist" aria-label="Rule audience"><button class="rules-tab" type="button" data-audience="General" role="tab" aria-selected="false">General</button><button class="rules-tab" type="button" data-audience="Participant" role="tab" aria-selected="false">Participants &amp; Parents</button><button class="rules-tab" type="button" data-audience="Volunteer" role="tab" aria-selected="false" id="audience-volunteer">Volunteers</button></div>
+<div id="rules-list"><div class="rules-state">Loading rules and regulations…</div></div>
+<div class="rules-note"><strong>Safety first:</strong> Immediately inform the event coordinator about any injury, missing child, unsafe situation, or urgent concern. Follow the instructions of the designated event coordinators.</div></main>
+<footer><div class="footer-brand"><img src="assets/apartment-logo.jpg" alt="Ambience Courtyard logo"><div><b>AMC Juniors Khelotsav 2026</b><span>Ambience Courtyard</span></div></div><span id="visitor-count" class="visitor-count" aria-label="Site visitor count">👀 Visitors: …</span><span>From <span id="footer-event-date">November 1st onwards</span> • 14 Sports &amp; Fun Events</span></footer>
+<script src="config.js"></script><script src="app.js"></script><script src="visitor-counter.js"></script>
+<script>
+(function(){
+ const root=document.getElementById('rules-list');let rows=[],active='General';
+ const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ function render(){const shown=rows.filter(r=>r.audience.toLowerCase()===active.toLowerCase()||(active==='General'&&r.audience.toLowerCase()==='all'));if(!shown.length){root.innerHTML='<div class="rules-state">No rules have been published in this section yet. Please check back later.</div>';return;}const groups=[];shown.forEach(r=>{const category=r.category||'General';let group=groups.find(g=>g.name===category);if(!group){group={name:category,items:[]};groups.push(group);}group.items.push(r);});root.innerHTML=groups.map(g=>`<section class="rules-group"><h2>${esc(g.name)}</h2><div class="rules-list">${g.items.map((r,i)=>card(r,i+1)).join('')}</div></section>`).join('');}
+ function card(r,n){return `<article class="rule-card"><span class="rule-number">${n}</span><div><h3>${esc(r.title||r.category)}</h3><p>${esc(r.rule)}</p></div></article>`;}
+ async function load(){if(!window.CONFIG||!CONFIG.apiUrl){root.innerHTML='<div class="rules-state">Rules are temporarily unavailable. Please try again later.</div>';return;}try{const res=await fetch(CONFIG.apiUrl+'?action=rules&_='+Date.now(),{cache:'no-store'});if(!res.ok)throw new Error('Request failed');const data=await res.json();rows=(Array.isArray(data.rules)?data.rules:[]).map(r=>({audience:String(r.audience||r.Audience||'General').trim(),category:String(r.category||r.Category||'General').trim()||'General',title:String(r.title||r.Title||r.RuleTitle||'').trim(),rule:String(r.rule||r.Rule||r.guideline||'').trim()})).filter(r=>r.rule);if(!rows.length){root.innerHTML='<div class="rules-state">No rules have been published yet. Please check back later.</div>';return;}render();}catch(e){root.innerHTML='<div class="rules-state">Unable to load rules right now. Please try again later.</div>';}}
+ document.querySelectorAll('.rules-tab').forEach(b=>b.addEventListener('click',()=>{active=b.dataset.audience;document.querySelectorAll('.rules-tab').forEach(x=>{x.classList.toggle('active',x===b);x.setAttribute('aria-selected',String(x===b));});render();}));
+ if(location.hash==='#audience-volunteer'){active='Volunteer';document.querySelectorAll('.rules-tab').forEach(x=>{const on=x.dataset.audience==='Volunteer';x.classList.toggle('active',on);x.setAttribute('aria-selected',String(on));});}else{document.querySelectorAll('.rules-tab').forEach(x=>{const on=x.dataset.audience==='General';x.classList.toggle('active',on);x.setAttribute('aria-selected',String(on));});}load();
+})();
+</script></body></html>

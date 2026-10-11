@@ -12,6 +12,7 @@ const HIGH_LEVEL_SCHEDULE_SHEET_ID = "1lgxqiyJtbYeVRdVcSxIXkRcR5Sk7ng4aw2RpR95AY
 const HIGH_LEVEL_SCHEDULE_TAB = "Schedule";
 const NOTIFICATIONS_TAB = "Notifications";
 const QA_TAB = "Q&A";
+const RULES_TAB = "Rules";
 
 // Create a separate Google Sheet for the public site visitor counter.
 const VISITOR_STATS_SHEET_ID = "1S0atryLkUYAQFYihyDqu8zi024dcgsV5Tzcs4g3gDoc";
@@ -65,6 +66,10 @@ function doGet(e) {
 
     if (action === "qna" || action === "qa") {
       return jsonOutput({success:true, questions:getQandA_()});
+    }
+
+    if (action === "rules") {
+      return jsonOutput({success:true, rules:getRules_()});
     }
 
     if (action === "partners" || action === "eventPartners") {
@@ -452,4 +457,29 @@ function sheetToObjects_(sheet) {
 
 function jsonOutput(data) {
   return ContentService.createTextOutput(JSON.stringify(data)).setMimeType(ContentService.MimeType.JSON);
+}
+
+
+/** Public Rules & Regulations data from the Rules tab in the high-level schedule spreadsheet.
+ * Columns: Audience, Category, Rule, Active, Display Order.
+ */
+function getRules_() {
+  if (!HIGH_LEVEL_SCHEDULE_SHEET_ID || HIGH_LEVEL_SCHEDULE_SHEET_ID.indexOf("PASTE_") === 0) return [];
+  try {
+    const ss = SpreadsheetApp.openById(HIGH_LEVEL_SCHEDULE_SHEET_ID);
+    const sheet = ss.getSheetByName(RULES_TAB);
+    if (!sheet) return [];
+    return sheetToObjects_(sheet).map(function(r, idx) {
+      const audience = String(r.Audience || r.audience || "General").trim() || "General";
+      const category = String(r.Category || r.category || "General").trim() || "General";
+      const rule = String(r.Rule || r.rule || r.Guideline || r.Guidelines || "").trim();
+      const active = String(r.Active || r.active || "Yes").trim();
+      const displayOrder = Number(r["Display Order"] || r.Order || idx + 1) || (idx + 1);
+      return {audience:audience, category:category, rule:rule, active:active, displayOrder:displayOrder};
+    }).filter(function(item) {
+      return item.rule !== "" && /^(yes|true|1)$/i.test(item.active);
+    }).sort(function(a, b) { return a.displayOrder - b.displayOrder; });
+  } catch (error) {
+    return [];
+  }
 }
