@@ -2323,3 +2323,26 @@ section#register.register .steps{gap:11px;}
 .guidelines-cta-copy p{font-size:13px;line-height:1.5;color:var(--muted);margin:0;max-width:760px}
 .guidelines-cta-button{white-space:nowrap;display:inline-flex;align-items:center;gap:9px}
 @media(max-width:650px){.guidelines-cta-section{padding-top:12px!important;padding-bottom:16px!important}.guidelines-cta{align-items:flex-start;gap:12px;padding:16px;border-radius:16px;flex-wrap:wrap}.guidelines-cta-icon{width:42px;height:42px;flex-basis:42px;border-radius:12px;font-size:22px}.guidelines-cta-copy{width:calc(100% - 54px);flex:1}.guidelines-cta-copy h2{font-size:21px;line-height:1.15}.guidelines-cta-copy p{font-size:12px}.guidelines-cta-button{width:100%;justify-content:center;padding:11px 14px}}
+
+
+/* Payment assistance note and WhatsApp contact in Kids Enrollment */
+section#register .enrollment-help-note{
+  margin-top:16px; max-width:650px; padding:14px 16px;
+  border:1px solid rgba(255,255,255,.24); border-left:4px solid #25d366;
+  border-radius:12px; background:rgba(255,255,255,.08);
+}
+section#register .enrollment-help-note p{
+  margin:0 0 12px; color:#f1f5f9; font-size:14px; line-height:1.55;
+}
+section#register .enrollment-help-note p strong{color:#ffe16a}
+section#register .enrollment-whatsapp-btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:7px;
+  background:#25d366 !important; color:#063b20 !important; box-shadow:none !important;
+  font-weight:800; text-decoration:none; border:0;
+}
+section#register .enrollment-whatsapp-btn:hover{filter:brightness(1.06)}
+@media(max-width:550px){
+  section#register .enrollment-help-note{padding:12px;margin-top:14px}
+  section#register .enrollment-help-note p{font-size:13px;line-height:1.5}
+  section#register .enrollment-whatsapp-btn{width:100%;box-sizing:border-box;text-align:center;font-size:13px;padding:11px 12px}
+}
