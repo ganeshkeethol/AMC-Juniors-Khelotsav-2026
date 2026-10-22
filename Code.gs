@@ -355,7 +355,12 @@ function volunteerAssignedToSport_(sportsValue, targetNormalized) {
 }
 
 function normalizeSportName_(value) {
-  return String(value || "").trim().toLowerCase().replace(/&/g,"and").replace(/\s+/g," ");
+  var normalized = String(value || "").trim().toLowerCase().replace(/&/g,"and").replace(/\s+/g," ");
+  // Treat the Enrollments sheet label "Basket Ball" and the website label
+  // "Basketball" as the same event when matching registrations, volunteers,
+  // and the sport reference sheet.
+  if (normalized.replace(/\s+/g, "") === "basketball") return "basketball";
+  return normalized;
 }
 
 function getEnrollments_() {
