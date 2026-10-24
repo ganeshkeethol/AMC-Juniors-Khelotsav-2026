@@ -2346,3 +2346,20 @@ section#register .enrollment-whatsapp-btn:hover{filter:brightness(1.06)}
   section#register .enrollment-help-note p{font-size:13px;line-height:1.5}
   section#register .enrollment-whatsapp-btn{width:100%;box-sizing:border-box;text-align:center;font-size:13px;padding:11px 12px}
 }
+
+
+/* Enrolled Kids name/details search */
+.participants-search-wrap{display:flex;flex-direction:column;gap:8px;margin:0 0 16px;padding:14px 16px;background:var(--card,#fff);border:1px solid rgba(24,70,137,.12);border-radius:14px;min-width:0;box-sizing:border-box}
+.participants-search-label{font-weight:800;color:var(--ink,#16376c)}
+.participants-search-control{display:flex;align-items:stretch;gap:10px;min-width:0}
+.participants-search-control input{flex:1;min-width:0;width:100%;padding:11px 14px;border:1px solid #cbd6e7;border-radius:9px;background:#fff;color:#17366a;font:inherit;font-weight:600;box-sizing:border-box;outline-offset:3px}
+.participants-search-control input:focus{border-color:#1d58a8;box-shadow:0 0 0 3px rgba(29,88,168,.12)}
+.participants-search-control button{border:0;border-radius:9px;padding:10px 18px;background:#123b73;color:#fff;font:inherit;font-weight:800;cursor:pointer;min-height:44px}
+.participants-search-control button:hover{background:#1d58a8}
+.participants-search-status{margin:0;color:var(--muted,#64748b);font-size:12px;line-height:1.4}
+@media(max-width:550px){
+  #participants>.participants-search-wrap{grid-column:1/-1!important;width:100%;min-width:0;margin:0 0 14px;padding:12px;box-sizing:border-box}
+  .participants-search-control{gap:8px}
+  .participants-search-control input{padding:10px;font-size:14px}
+  .participants-search-control button{padding:9px 12px;font-size:13px}
+}

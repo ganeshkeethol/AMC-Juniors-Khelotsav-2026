@@ -220,12 +220,28 @@ function renderGameData(response){
 
    const participantBody=document.getElementById('participants-body');
    const participantsAgeFilter=document.getElementById('participants-age-filter');
+   const participantSearch=document.getElementById('participants-search');
+   const participantSearchClear=document.getElementById('participants-search-clear');
+   const participantSearchStatus=document.getElementById('participants-search-status');
    const participantAgeOf=row=>String(row["Age Group"]||row.ageGroup||row.Age||row.Category||'').trim();
+   const participantNameOf=row=>String(row["Child Name"]||row.Child||row.child||'').trim();
+   const participantBlockOf=row=>String(row["Block"]||row.Block||'').trim();
+   const participantFlatOf=row=>String(row["Flat Number"]||row["Flat No"]||row.flatNumber||'').trim();
+   const participantEventStatusOf=row=>String(row["Event Status"]||row.eventStatus||'').trim();
    const normalizeParticipantAge=value=>{
      const raw=String(value||'').trim().replace(/[–—]/g,'-');
      const digits=raw.match(/(\d{1,2})\s*(?:-|to)\s*(\d{1,2})/i);
      return digits ? `${Number(digits[1])}-${Number(digits[2])}` : raw.toLowerCase();
    };
+   const normalizeParticipantSearch=value=>String(value||'').trim().toLocaleLowerCase().replace(/\s+/g,' ');
+   // Search the public participant details shown in this table, plus enrollment/event status fields.
+   // Phone numbers and other private contact information are intentionally excluded from searching/display.
+   const participantSearchText=row=>[
+     participantNameOf(row), participantAgeOf(row), participantBlockOf(row), participantFlatOf(row),
+     participantEventStatusOf(row), row["Enrollment Status"], row.enrollmentStatus,
+     row["Event"], row.event, row["Team ID"], row.teamId, row["Team Name"], row.teamName,
+     row["Team Role"], row.teamRole
+   ].filter(value=>value!==undefined && value!==null && String(value).trim()!=='').join(' ').toLocaleLowerCase();
    // Populate age-group choices from actual enrollment data, not a hard-coded list.
    const participantAgeMap=new Map();
    enrollments.forEach(row=>{
@@ -240,20 +256,33 @@ function renderGameData(response){
    }
    const renderFilteredParticipants=()=>{
      const selected=participantsAgeFilter?participantsAgeFilter.value:'All Age';
-     const filtered=selected==='All Age'?enrollments:enrollments.filter(row=>normalizeParticipantAge(participantAgeOf(row))===selected);
+     const query=normalizeParticipantSearch(participantSearch?participantSearch.value:'');
+     const ageFiltered=selected==='All Age'?enrollments:enrollments.filter(row=>normalizeParticipantAge(participantAgeOf(row))===selected);
+     const filtered=ageFiltered.filter(row=>!query || participantSearchText(row).includes(query));
      const sorted=filtered.slice().sort((a,b)=>{
-       const blockA=String(a["Block"]||a.Block||'').trim();
-       const blockB=String(b["Block"]||b.Block||'').trim();
-       const blockCompare=blockA.localeCompare(blockB, undefined, {numeric:true, sensitivity:'base'});
+       const blockCompare=participantBlockOf(a).localeCompare(participantBlockOf(b), undefined, {numeric:true, sensitivity:'base'});
        if(blockCompare!==0) return blockCompare;
-       const flatA=String(a["Flat Number"]||a.flatNumber||'').trim();
-       const flatB=String(b["Flat Number"]||b.flatNumber||'').trim();
-       return flatA.localeCompare(flatB, undefined, {numeric:true, sensitivity:'base'});
+       return participantFlatOf(a).localeCompare(participantFlatOf(b), undefined, {numeric:true, sensitivity:'base'});
      });
      setText('participant-count',sorted.length);
-     if(participantBody) participantBody.innerHTML=sorted.length?sorted.map(x=>`<tr><td><b>${esc(x["Child Name"]||x.Child||x.child)}</b></td><td>${esc(participantAgeOf(x))}</td><td>${esc(x["Block"]||x.Block||'')}</td><td>${esc(x["Flat Number"]||x.flatNumber||'')}</td><td>${esc(x["Event Status"]||x.eventStatus)}</td></tr>`).join(''):`<tr><td colspan="5">${enrollments.length?'No enrolled kids in this age group yet.':'No enrolled kids published yet.'}</td></tr>`;
+     if(participantSearchStatus){
+       participantSearchStatus.textContent=query
+         ? `Found ${sorted.length} match${sorted.length===1?'':'es'}${selected==='All Age'?'':' in the selected age group'}.`
+         : `Showing ${sorted.length} enrolled kid${sorted.length===1?'':'s'}${selected==='All Age'?'':' in the selected age group'}.`;
+     }
+     if(participantBody){
+       let emptyMessage='No enrolled kids published yet.';
+       if(enrollments.length && query) emptyMessage='No enrolled kids match your search. Try another name or detail.';
+       else if(enrollments.length && selected!=='All Age') emptyMessage='No enrolled kids in this age group yet.';
+       participantBody.innerHTML=sorted.length?sorted.map(x=>`<tr><td><b>${esc(participantNameOf(x))}</b></td><td>${esc(participantAgeOf(x))}</td><td>${esc(participantBlockOf(x))}</td><td>${esc(participantFlatOf(x))}</td><td>${esc(participantEventStatusOf(x))}</td></tr>`).join(''):`<tr><td colspan="5">${esc(emptyMessage)}</td></tr>`;
+     }
    };
-   if(participantsAgeFilter) participantsAgeFilter.onchange=renderFilteredParticipants;
+   if(participantsAgeFilter) participantsAgeFilter.addEventListener('change',renderFilteredParticipants);
+   if(participantSearch) participantSearch.addEventListener('input',renderFilteredParticipants);
+   if(participantSearchClear) participantSearchClear.addEventListener('click',()=>{
+     if(participantSearch){participantSearch.value='';participantSearch.focus();}
+     renderFilteredParticipants();
+   });
    renderFilteredParticipants();
 
    // Group games: show team cards and use Team A / Team B schedule & results.
