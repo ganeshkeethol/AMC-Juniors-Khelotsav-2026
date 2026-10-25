@@ -14,7 +14,7 @@ Every sport card on the home page is clickable and opens `event.html?game=...` w
 
 ## Live data
 
-The recommended setup is Google Form → Google Sheet → Google Apps Script → GitHub Pages.
+The site publishes event information from Google Sheets through Google Apps Script to GitHub Pages. The public Kids Enrollment registration section has been removed.
 
 Google Sheets tabs:
 
@@ -24,8 +24,6 @@ Google Sheets tabs:
 ### Volunteers
 `Name | Block | Flat No | Mobile Number | Event / Sport | SPOC For`
 
-### Kids enrollment deadline
-Change `CONFIG.enrollmentDeadline` in `website/config.js` to update the last date shown on the Kids Enrollment and Registration sections. Example: `enrollmentDeadline: "October 24, 2026"`.
 
 ### Enrollments
 `Child Name | Age Group | Event | Block | Flat No | Mobile Number | Enrollment Status | Event Status | Team ID | Team Name | Team Role`
@@ -43,11 +41,6 @@ Keep private phone numbers, apartment numbers, medical information and other sen
 
 Upload the contents of this folder to the repository root. Enable Settings → Pages → Deploy from a branch → `main` → `/ (root)`.
 
-## Google Form
-
-Add the registration URL in `config.js`:
-
-`googleFormUrl: "YOUR_GOOGLE_FORM_URL"`
 
 ## Apps Script
 
@@ -116,12 +109,11 @@ The main header now displays both the AMC Juniors Khelotsav event logo and the A
 Create a `References` tab with columns:
 `event | category | title | type | url | active`
 
-Use `event` as a sport name for sport-specific links, or `All Events` for a common link. Suggested categories: Enrollment, Schedule, Result, Rules, Document, Other. The home page shows active reference links, and each sport page filters references for that sport.
+Use `event` as a sport name for sport-specific links, or `All Events` for a common link. Suggested categories: Schedule, Result, Rules, Document, Other. The home page shows active reference links, and each sport page filters references for that sport.
 
 Example:
 `Badminton | Rules | Badminton Rules | PDF | https://drive.google.com/... | Yes`
 `Badminton | Result | Badminton Results | Google Sheet | https://docs.google.com/... | Yes`
-`All Events | Enrollment | Kids Enrollment Form | Google Form | https://forms.google.com/... | Yes`
 
 For the complete Google Drive/Sheets/Forms connection instructions, see `../SETUP_GUIDE.md`.
 

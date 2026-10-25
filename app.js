@@ -83,7 +83,6 @@ const events=[
 ["🏸","Badminton","Racquet sport","badminton"],["🏏","Box Cricket","Team sport","box-cricket"],["🏀","Basketball","Team sport","basketball"],["🎯","Carroms","Indoor game","carroms"],["♟️","Chess","Mind game","chess"],["🏊","Swimming","Aquatic sport","swimming"],["🏓","Table Tennis","Racquet sport","table-tennis"],["🎨","Drawing","Creative activity","drawing"],["🎵","Musical Chairs","Fun game","musical-chairs"],["🧠","Quiz","Fun & knowledge","quiz"],["🚲","Slow Cycling","Fun challenge","slow-cycle"],["🐸","Frog Jump","Fun challenge","frog-jump"],["🎲","Fun Games (4-6)","Fun game • Age 4-6","fun-games-4-6"],["🎭","Fancy Dress","Creative activity","fancy-dress"]];
 const eventGrid=document.getElementById("event-grid");
 if(eventGrid) eventGrid.innerHTML=events.map(e=>`<a class="card event-card" href="event.html?game=${encodeURIComponent(e[3])}"><div class="emoji">${e[0]}</div><h3>${e[1]}</h3><p>${e[2]}</p><span class="card-link">View event details →</span></a>`).join("");
-const formBtn=document.getElementById("form-btn"); if(formBtn) formBtn.onclick=()=>CONFIG.googleFormUrl?window.open(CONFIG.googleFormUrl,"_blank"):alert("Google Form link will be added soon.");
 
 
 // Important notifications carousel. Data comes from the configured Google Sheet.
@@ -172,11 +171,6 @@ const formBtn=document.getElementById("form-btn"); if(formBtn) formBtn.onclick=(
   document.addEventListener('visibilitychange',()=>{if(document.hidden){if(timer)clearInterval(timer);}else restart();});
 })();
 
-/* Dynamic kids enrollment deadline: edit only CONFIG.enrollmentDeadline in config.js. */
-(function(){
-  const deadline=(window.CONFIG && CONFIG.enrollmentDeadline) ? String(CONFIG.enrollmentDeadline) : "October 24, 2026";
-  document.querySelectorAll(".enrollment-deadline-value, .enrollment-deadline-light-value").forEach(el=>{ el.textContent=deadline; });
-})();
 
 
 // Lightweight homepage high-level schedule. It fetches only one small Google Sheet.
