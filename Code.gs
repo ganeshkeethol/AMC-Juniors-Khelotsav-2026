@@ -64,6 +64,10 @@ function doGet(e) {
       return jsonOutput({success:true, notifications:getNotifications_()});
     }
 
+    if (action === "gallery") {
+      return jsonOutput({success:true, gallery:getGallery_()});
+    }
+
     if (action === "qna" || action === "qa") {
       return jsonOutput({success:true, questions:getQandA_()});
     }
@@ -236,6 +240,27 @@ function getHighLevelSchedule_() {
     const sheet = ss.getSheetByName(HIGH_LEVEL_SCHEDULE_TAB) || ss.getSheets()[0];
     return sheet ? sheetToObjects_(sheet) : [];
   } catch (error) {
+    return [];
+  }
+}
+
+/** Public homepage image carousel. Manage images in the Gallery tab of the high-level schedule spreadsheet. */
+function getGallery_() {
+  if (!HIGH_LEVEL_SCHEDULE_SHEET_ID || HIGH_LEVEL_SCHEDULE_SHEET_ID.indexOf("PASTE_") === 0) return [];
+  try {
+    const ss = SpreadsheetApp.openById(HIGH_LEVEL_SCHEDULE_SHEET_ID);
+    const sheet = ss.getSheetByName("Gallery");
+    if (!sheet) return [];
+    return sheetToObjects_(sheet).map(function(r, idx) {
+      const imageUrl = String(r["Image URL"] || r.ImageURL || r.URL || r.Image || "").trim();
+      const active = String(r.Active || r.Publish || r.Status || "yes").trim();
+      const caption = String(r.Caption || r.Title || r.Description || "").trim();
+      const order = Number(r["Display Order"] || r.Order || idx + 1) || idx + 1;
+      return {imageUrl:imageUrl, caption:caption, active:active, order:order};
+    }).filter(function(item) {
+      return item.imageUrl && /^(yes|true|1|active|published|show)$/i.test(item.active);
+    }).sort(function(a,b) { return a.order - b.order; });
+  } catch (err) {
     return [];
   }
 }

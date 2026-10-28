@@ -246,3 +246,84 @@ if(eventGrid) eventGrid.innerHTML=events.map(e=>`<a class="card event-card" href
     })
     .catch(()=>{contentEl.innerHTML='<div class="schedule-empty"><b>Schedule starts '+startLabel+'</b><span>The day-wise schedule will appear here as organisers publish dates and timings.</span></div>';});
 })();
+
+
+/* Homepage information-banner carousel. Images/captions are managed in the Google Sheet's Gallery tab. */
+(function loadEventGallery(){
+  const track=document.getElementById('gallery-track');
+  const dots=document.getElementById('gallery-dots');
+  const count=document.getElementById('gallery-count');
+  const prev=document.querySelector('.gallery-prev');
+  const next=document.querySelector('.gallery-next');
+  const carousel=document.querySelector('.event-gallery-carousel');
+  if(!track || !dots || !window.CONFIG) return;
+
+  let images=[], index=0, timer=null;
+  const esc=v=>String(v==null?'':v).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+  // Google Drive share URLs point to an HTML preview, not an image file.
+  // Convert them to direct image endpoints and keep fallback URLs for browsers where one endpoint fails.
+  function imageCandidates(raw){
+    const value=String(raw||'').trim();
+    if(!value) return [];
+    let id='';
+    try {
+      const u=new URL(value);
+      if(/(^|\.)drive\.google\.com$/i.test(u.hostname)){
+        id=(u.pathname.match(/\/file\/d\/([^/]+)/)||[])[1] || u.searchParams.get('id') || '';
+      }
+    } catch(e) {}
+    if(!id) return [value];
+    return [
+      `https://drive.google.com/thumbnail?id=${encodeURIComponent(id)}&sz=w2000`,
+      `https://drive.google.com/uc?export=view&id=${encodeURIComponent(id)}`,
+      `https://lh3.googleusercontent.com/d/${encodeURIComponent(id)}`
+    ];
+  }
+  function render(){
+    if(!images.length){
+      track.innerHTML='<div class="gallery-empty"><span>📢</span><b>Information banners will appear here</b><small>Organisers can add event schedules, important announcements, guidelines, and other image banners in the Gallery sheet.</small></div>';
+      dots.innerHTML=''; count.textContent=''; prev.hidden=true; next.hidden=true; return;
+    }
+    track.innerHTML=images.map((item,i)=>{
+      const candidates=imageCandidates(item.imageUrl);
+      return `<figure class="gallery-slide"><img src="${esc(candidates[0]||item.imageUrl)}" data-candidates="${esc(JSON.stringify(candidates))}" data-candidate-index="0" alt="${esc(item.caption || `Information banner ${i+1}`)}" ${i===0?'fetchpriority="high"':'loading="lazy"'}><figcaption ${item.caption?'':'hidden'}>${esc(item.caption)}</figcaption></figure>`;
+    }).join('');
+    dots.innerHTML=images.map((_,i)=>`<button type="button" aria-label="Show image ${i+1}" aria-selected="${i===index?'true':'false'}" data-index="${i}"></button>`).join('');
+    prev.hidden=images.length<2; next.hidden=images.length<2;
+    update();
+    track.querySelectorAll('img').forEach(img=>img.addEventListener('error',()=>{
+      let candidates=[];
+      try{candidates=JSON.parse(img.dataset.candidates||'[]')}catch(e){}
+      const nextCandidate=Number(img.dataset.candidateIndex||0)+1;
+      if(nextCandidate<candidates.length){img.dataset.candidateIndex=String(nextCandidate);img.src=candidates[nextCandidate];return;}
+      img.closest('.gallery-slide').classList.add('gallery-image-error');
+    }));
+  }
+  function update(){
+    track.style.transform=`translateX(-${index*100}%)`;
+    dots.querySelectorAll('button').forEach((b,i)=>b.setAttribute('aria-selected',String(i===index)));
+    count.textContent=images.length ? `${index+1} / ${images.length}` : '';
+  }
+  function go(n){if(!images.length)return; index=(n+images.length)%images.length; update();}
+  function stop(){if(timer){clearInterval(timer);timer=null;}}
+  function start(){stop();if(images.length>1 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches)timer=setInterval(()=>go(index+1),5000);}
+  prev.addEventListener('click',()=>{go(index-1);start();});
+  next.addEventListener('click',()=>{go(index+1);start();});
+  dots.addEventListener('click',e=>{const b=e.target.closest('button[data-index]');if(b){go(Number(b.dataset.index));start();}});
+  carousel.addEventListener('mouseenter',stop); carousel.addEventListener('mouseleave',start);
+  carousel.addEventListener('focusin',stop); carousel.addEventListener('focusout',start);
+  document.addEventListener('visibilitychange',()=>document.hidden?stop():start());
+
+  async function load(){
+    try{
+      const response=await fetch(`${CONFIG.apiUrl}?action=gallery&_=${Date.now()}`,{cache:'no-store'});
+      if(!response.ok) throw new Error('Information banners unavailable');
+      const payload=await response.json();
+      images=(Array.isArray(payload.gallery)?payload.gallery:[]).filter(item=>{
+        try{return /^https?:$/.test(new URL(item.imageUrl).protocol);}catch(e){return false;}
+      });
+    }catch(e){images=[];}
+    render();start();
+  }
+  load();
+})();
