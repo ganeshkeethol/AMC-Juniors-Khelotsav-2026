@@ -2358,7 +2358,8 @@ section#register .enrollment-whatsapp-btn:hover{filter:brightness(1.06)}
 .participants-search-control button:hover{background:#1d58a8}
 .participants-search-status{margin:0;color:var(--muted,#64748b);font-size:12px;line-height:1.4}
 @media(max-width:550px){
-  #participants>.participants-search-wrap{grid-column:1/-1!important;width:100%;min-width:0;margin:0 0 14px;padding:12px;box-sizing:border-box}
+  #participants>.participants-search-wrap,
+  #event-schedule>.schedule-search-wrap{grid-column:1/-1!important;width:100%;min-width:0;margin:0 0 14px;padding:12px;box-sizing:border-box}
   .participants-search-control{gap:8px}
   .participants-search-control input{padding:10px;font-size:14px}
   .participants-search-control button{padding:9px 12px;font-size:13px}

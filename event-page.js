@@ -320,7 +320,18 @@ function renderGameData(response){
    const scheduleTable=scheduleBody ? scheduleBody.closest('table') : null;
    const scheduleHead=scheduleTable ? scheduleTable.querySelector('thead tr') : null;
    const scheduleAgeFilter=document.getElementById('schedule-age-filter');
+   const scheduleSearch=document.getElementById('schedule-search');
+   const scheduleSearchClear=document.getElementById('schedule-search-clear');
+   const scheduleSearchStatus=document.getElementById('schedule-search-status');
+   const normalizeScheduleSearch=value=>String(value||'').trim().toLocaleLowerCase().replace(/\s+/g,' ');
    const scheduleAgeOf = row => String(row["Age Group"] || row.ageGroup || row.Age || row.Category || '').trim();
+   const scheduleSearchText=row=>[
+     row.Day,row.day,row.Date,row.date,row["Reporting Time"],row.reporting,row["Event Time"],row.time,
+     row.Event,row.event,game[1],scheduleAgeOf(row),row["Participant Name"],row.Participant,row.participant,
+     row["Child Name"],row.child,row.Block,row.block,row["Flat Number"],row.flatNumber,row.Venue,row.venue,
+     row.Status,row.status,row["Match / Round"],row.Match,row.Round,row.round,row["Team A"],row.TeamA,
+     row["Team A Name"],row["Team B"],row.TeamB,row["Team B Name"]
+   ].filter(value=>value!==undefined && value!==null && String(value).trim()!=='').join(' ').toLocaleLowerCase();
    const normalizeScheduleAge = value => {
      const raw=String(value||'').trim().replace(/[–—]/g,'-');
      const digits=raw.match(/(\d{1,2})\s*(?:-|to)\s*(\d{1,2})/i);
@@ -342,17 +353,29 @@ function renderGameData(response){
    }
    const renderFilteredSchedule=()=>{
      const selected=scheduleAgeFilter ? scheduleAgeFilter.value : 'All Age';
-     const filtered=selected==='All Age' ? schedule : schedule.filter(x=>normalizeScheduleAge(scheduleAgeOf(x))===selected);
+     const query=normalizeScheduleSearch(scheduleSearch ? scheduleSearch.value : '');
+     const ageFiltered=selected==='All Age' ? schedule : schedule.filter(x=>normalizeScheduleAge(scheduleAgeOf(x))===selected);
+     const filtered=ageFiltered.filter(row=>!query || scheduleSearchText(row).includes(query));
+     if(scheduleSearchStatus){
+       scheduleSearchStatus.textContent=query
+         ? `Showing ${filtered.length} of ${schedule.length} schedule item${schedule.length===1?'':'s'} matching “${scheduleSearch.value.trim()}”.`
+         : `Showing ${filtered.length} schedule item${filtered.length===1?'':'s'}. Search across all schedule details, or combine search with the age-group filter.`;
+     }
      if(!scheduleBody) return;
      if(teamBased){
        if(scheduleHead) scheduleHead.innerHTML='<th>Day</th><th>Date</th><th>Reporting</th><th>Event Time</th><th>Age Group</th><th>Match / Round</th><th>Team A</th><th>Team B</th><th>Venue</th><th>Status</th>';
-       scheduleBody.innerHTML=filtered.length?filtered.map(x=>`<tr><td>${esc(x.Day||x.day)}</td><td>${esc(x.Date||x.date)}</td><td>${esc(x["Reporting Time"]||x.reporting)}</td><td>${esc(x["Event Time"]||x.time)}</td><td>${esc(scheduleAgeOf(x))}</td><td>${esc(x["Match / Round"]||x.Match||x.Round||x.round||x["Round"]||'')}</td><td>${esc(x["Team A"]||x.TeamA||x["Team A Name"]||'')}</td><td>${esc(x["Team B"]||x.TeamB||x["Team B Name"]||'')}</td><td>${esc(x.Venue||x.venue)}</td><td>${esc(x.Status||x.status)}</td></tr>`).join(''):`<tr><td colspan="10">${schedule.length?'No schedule published for this age group yet.':'No schedule published yet.'}</td></tr>`;
+       scheduleBody.innerHTML=filtered.length?filtered.map(x=>`<tr><td>${esc(x.Day||x.day)}</td><td>${esc(x.Date||x.date)}</td><td>${esc(x["Reporting Time"]||x.reporting)}</td><td>${esc(x["Event Time"]||x.time)}</td><td>${esc(scheduleAgeOf(x))}</td><td>${esc(x["Match / Round"]||x.Match||x.Round||x.round||x["Round"]||'')}</td><td>${esc(x["Team A"]||x.TeamA||x["Team A Name"]||'')}</td><td>${esc(x["Team B"]||x.TeamB||x["Team B Name"]||'')}</td><td>${esc(x.Venue||x.venue)}</td><td>${esc(x.Status||x.status)}</td></tr>`).join(''):`<tr><td colspan="10">${query?'No schedule items match your search. Try another keyword.':(schedule.length?'No schedule published for this age group yet.':'No schedule published yet.')}</td></tr>`;
      }else{
        if(scheduleHead) scheduleHead.innerHTML='<th>Day</th><th>Date</th><th>Reporting</th><th>Event Time</th><th>Event</th><th>Age Group</th><th>Participant</th><th>Block</th><th>Flat Number</th><th>Venue</th><th>Status</th>';
-       scheduleBody.innerHTML=filtered.length?filtered.map(x=>`<tr><td>${esc(x.Day||x.day)}</td><td>${esc(x.Date||x.date)}</td><td>${esc(x["Reporting Time"]||x.reporting)}</td><td>${esc(x["Event Time"]||x.time)}</td><td>${esc(x.Event||x.event||game[1])}</td><td>${esc(scheduleAgeOf(x))}</td><td>${esc(x["Participant Name"]||x.Participant||x.participant||x["Child Name"]||x.child)}</td><td>${esc(x.Block||x.block)}</td><td>${esc(x["Flat Number"]||x.flatNumber)}</td><td>${esc(x.Venue||x.venue)}</td><td>${esc(x.Status||x.status)}</td></tr>`).join(''):`<tr><td colspan="11">${schedule.length?'No schedule published for this age group yet.':'No schedule published yet.'}</td></tr>`;
+       scheduleBody.innerHTML=filtered.length?filtered.map(x=>`<tr><td>${esc(x.Day||x.day)}</td><td>${esc(x.Date||x.date)}</td><td>${esc(x["Reporting Time"]||x.reporting)}</td><td>${esc(x["Event Time"]||x.time)}</td><td>${esc(x.Event||x.event||game[1])}</td><td>${esc(scheduleAgeOf(x))}</td><td>${esc(x["Participant Name"]||x.Participant||x.participant||x["Child Name"]||x.child)}</td><td>${esc(x.Block||x.block)}</td><td>${esc(x["Flat Number"]||x.flatNumber)}</td><td>${esc(x.Venue||x.venue)}</td><td>${esc(x.Status||x.status)}</td></tr>`).join(''):`<tr><td colspan="11">${query?'No schedule items match your search. Try another keyword.':(schedule.length?'No schedule published for this age group yet.':'No schedule published yet.')}</td></tr>`;
      }
    };
    if(scheduleAgeFilter) scheduleAgeFilter.onchange=renderFilteredSchedule;
+   if(scheduleSearch) scheduleSearch.addEventListener('input',renderFilteredSchedule);
+   if(scheduleSearchClear) scheduleSearchClear.addEventListener('click',()=>{
+     if(scheduleSearch){scheduleSearch.value='';scheduleSearch.focus();}
+     renderFilteredSchedule();
+   });
    renderFilteredSchedule();
 
    const resultsBody=document.getElementById('game-results-body');
