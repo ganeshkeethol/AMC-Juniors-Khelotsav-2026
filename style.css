@@ -2404,6 +2404,16 @@ section#register .enrollment-whatsapp-btn:hover{filter:brightness(1.06)}
 @media (max-width: 600px) {
   #event-gallery.event-gallery-section { padding-top: 18px !important; padding-bottom: 6px !important; }
   #event-gallery .event-gallery-carousel { margin-top: 10px !important; padding-bottom: 4px !important; }
+  /* Taller mobile banner frame so portrait and schedule banners are easier to read. */
+  #event-gallery .gallery-slide { height: clamp(360px, 105vw, 500px) !important; }
+  #event-gallery .gallery-viewport { min-height: 360px; }
+  #event-gallery .gallery-slide img { width: 100%; height: 100%; object-fit: contain; }
+  /* Keep the caption anchored close to the bottom edge of the taller banner. */
+  #event-gallery .gallery-slide figcaption {
+    left: 0; right: 0; bottom: 0 !important;
+    padding: 38px 14px 8px !important;
+    font-size: 15px; line-height: 1.25;
+  }
   #event-gallery .gallery-dots { margin-top: 7px !important; }
   #event-gallery .gallery-count { margin-top: 3px !important; }
   #events { padding-top: 14px !important; }
