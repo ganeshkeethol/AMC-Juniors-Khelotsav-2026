@@ -2419,3 +2419,41 @@ section#register .enrollment-whatsapp-btn:hover{filter:brightness(1.06)}
   #events { padding-top: 14px !important; }
   #events > .title { margin-top: 0 !important; }
 }
+
+/* Mobile information banners: size the image itself, not an empty fixed-height frame.
+   This lets the full banner use the available phone width and keeps its natural ratio. */
+@media (max-width: 600px) {
+  #event-gallery .event-gallery-carousel {
+    width: 100%;
+    max-width: none;
+    box-sizing: border-box;
+    padding: 0 8px 8px !important;
+    margin-top: 10px !important;
+  }
+  #event-gallery .gallery-viewport {
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: hidden;
+  }
+  #event-gallery .gallery-track {
+    align-items: flex-start;
+  }
+  #event-gallery .gallery-slide {
+    flex: 0 0 100%;
+    width: 100%;
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 0;
+  }
+  #event-gallery .gallery-slide img {
+    display: block;
+    width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    object-fit: contain !important;
+  }
+  #event-gallery .gallery-slide figcaption {
+    bottom: 0 !important;
+    padding: 34px 14px 10px !important;
+  }
+}
