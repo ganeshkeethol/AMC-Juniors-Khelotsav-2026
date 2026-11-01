@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#123b73"><title>Kids Registration Search • AMC Juniors Khelotsav 2026</title>
+<link rel="stylesheet" href="style.css"><link rel="stylesheet" href="registration-search.css">
+</head><body>
+<img class="site-floating-logo" src="assets/ambience-courtyard-logo-transparent.png" alt="" aria-hidden="true">
+<header class="subhero registration-hero"><nav><a class="brand" href="index.html"><span>AMC Juniors Khelotsav 2026</span></a><div class="subnav-actions"><a class="back-link" href="index.html">← Home</a><button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">☰</button></div></nav>
+<div id="mobile-menu" class="mobile-menu" hidden><a href="index.html#events">🎯 Events</a><a href="index.html#schedule">📅 Schedule</a><a href="results.html">🏆 Live Results</a><a href="qa.html">❓ Q&amp;A</a><a href="registration-search.html">👧 Kids Registration Search</a></div>
+<div class="event-hero"><div><div class="eyebrow">PARTICIPANT LOOKUP</div><h1>Kids Registration Search</h1><p class="lead">Find registered children and see which games they have signed up for.</p></div><div class="event-badge"><span>👧</span><small>Registration details</small></div></div></header>
+<main class="registration-main">
+<section class="registration-summary" aria-label="Registration summary">
+ <article class="reg-stat"><span>👧</span><div><b id="total-kids">—</b><small>Registered Kids</small></div></article>
+ <article class="reg-stat"><span>🏅</span><div><b id="total-signups">—</b><small>Game Registrations</small></div></article>
+ <article class="reg-stat"><span>🎯</span><div><b id="total-games">—</b><small>Games</small></div></article>
+</section>
+<section class="registration-controls">
+ <label class="reg-search"><span>🔍</span><input id="kid-search" type="search" placeholder="Search child name, game, block or flat number…" autocomplete="off"></label>
+ <div class="reg-filters"><label>Game<select id="game-filter"><option value="">All Games</option></select></label><label>Age Group<select id="age-filter"><option value="">All Age Groups</option></select></label><label>Block<select id="block-filter"><option value="">All Blocks</option></select></label></div>
+ <p id="result-count" class="reg-result-count" aria-live="polite">Loading registrations…</p>
+</section>
+<section><div id="kids-card-grid" class="kids-card-grid"><div class="reg-loading">Loading enrolled kids…</div></div></section>
+</main>
+<footer><div class="footer-brand"><img src="assets/apartment-logo.jpg" alt="Ambience Courtyard logo"><div><b>AMC Juniors Khelotsav 2026</b><span>Ambience Courtyard</span></div></div><span>Kids Registration Search</span></footer>
+<script src="config.js"></script><script src="app.js"></script><script src="registration-search.js"></script>
+</body></html>
