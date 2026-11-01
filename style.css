@@ -2389,12 +2389,47 @@ section#register .enrollment-whatsapp-btn:hover{filter:brightness(1.06)}
 .gallery-empty span{font-size:42px}.gallery-empty small{color:var(--muted);max-width:400px}
 @media(max-width:600px){
  .event-gallery-section{padding:28px 14px 34px}
- .event-gallery-carousel{padding:0 28px 24px;margin-top:16px}
- .gallery-slide{height:clamp(200px,58vw,320px)}
- .gallery-viewport{border-radius:17px}
- .gallery-slide figcaption{padding:20px 14px 13px}
+ .event-gallery-carousel{padding:0 12px 24px;margin-top:16px}
+ /* Restore the larger mobile information banner dimensions. */
+ .gallery-slide{height:clamp(560px,150vw,720px) !important}
+ .gallery-viewport{min-height:560px;border-radius:17px}
+ .gallery-slide img{width:100%;height:100%;object-fit:contain}
+ .gallery-slide figcaption{padding:38px 14px 8px !important;font-size:15px;line-height:1.25}
  .gallery-arrow{width:34px;height:34px;font-size:27px;top:calc(50% - 20px)}
 }
+/* Mobile information banners: use the full phone width and preserve the source image ratio. */
+@media (max-width: 600px) {
+  #event-gallery .event-gallery-carousel {
+    width: 100% !important;
+    max-width: none !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    box-sizing: border-box;
+  }
+  #event-gallery .gallery-viewport {
+    width: 100%;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: hidden;
+  }
+  #event-gallery .gallery-slide {
+    width: 100%;
+    min-width: 100%;
+    height: auto !important;
+    aspect-ratio: auto !important;
+  }
+  #event-gallery .gallery-slide img {
+    display: block;
+    width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    object-fit: contain !important;
+  }
+  #event-gallery .gallery-slide figcaption {
+    padding: 34px 14px 10px !important;
+  }
+}
+
 @media(prefers-reduced-motion:reduce){.gallery-track{transition:none}}
 
 
