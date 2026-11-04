@@ -1,34 +1,4 @@
 
-// Light sports-themed falling emoji decoration. Non-interactive and automatically
-// disabled for reduced-motion users.
-(function addFallingSportsEmojis(){
-  const reduceMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
-  if (document.getElementById('falling-sports-emojis')) return;
-
-  const layer = document.createElement('div');
-  layer.id = 'falling-sports-emojis';
-  layer.setAttribute('aria-hidden','true');
-
-  const icons = ['🎾','🏸','🏀','🏏','🏅','🎾','🏸','🏀','🏏','🏅','🎾','🏸'];
-  icons.forEach((icon, i) => {
-    const item = document.createElement('span');
-    item.className = 'falling-sports-emoji';
-    item.textContent = icon;
-    item.style.setProperty('--x', `${6 + ((i * 13.7) % 88)}vw`);
-    item.style.setProperty('--delay', `${reduceMotion ? '0s' : -(i * 1.35) + 's'}`);
-    item.style.setProperty('--duration', `${8 + (i % 5)}s`);
-    item.style.setProperty('--drift', `${(i % 2 ? 16 : -16)}px`);
-    item.style.setProperty('--size', `${18 + (i % 4) * 3}px`);
-    if (reduceMotion) {
-      item.classList.add('falling-sports-emoji-static');
-      item.style.setProperty('--static-y', `${8 + ((i * 17) % 82)}vh`);
-    }
-    layer.appendChild(item);
-  });
-
-  document.body.appendChild(layer);
-})();
-
 // Responsive mobile navigation: desktop top nav, floating mobile menu.
 (function(){
   const toggle=document.querySelector('.menu-toggle');

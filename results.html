@@ -22,14 +22,14 @@
 <link rel="image_src" href="https://ganeshkeethol.github.io/AMC-Juniors-Khelotsav-2026/og-image.jpg">
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#123b73">
-<title>Live Results • AMC Juniors Khelotsav 2026</title>
+<title>Event Results • AMC Juniors Khelotsav 2026</title>
 <link rel="stylesheet" href="style.css">
 </head><body>
 <img class="site-floating-logo" src="assets/ambience-courtyard-logo-transparent.png" alt="Ambience Courtyard" aria-hidden="true">
 <header class="subhero">
 <nav><a class="brand" href="index.html"><span>AMC Juniors Khelotsav 2026</span></a><div class="subnav-actions"><a class="back-link" href="index.html#events">← All Events</a><button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">☰</button></div></nav>
-<div id="mobile-menu" class="mobile-menu" hidden><a href="qa.html">❓ Q&amp;A</a><a href="index.html#events">🎯 Events</a><a href="index.html#schedule">📅 Schedule</a><a href="results.html">🏆 Live Results</a><a href="rules.html">📋 Rules &amp; Regulations</a><a href="highlights-2025.html">📸 2025 Highlights</a><a href="partners.html">🤝 Event Partners</a><a href="index.html#volunteer-registration">🤝 Register as Volunteer</a><a href="index.html#sponsorship">🏏 Sponsorship</a><a href="index.html#guidelines">🛡️ Guidelines</a><a href="index.html#rules">📋 Rules</a></div>
-<div class="event-hero"><div><div class="eyebrow">LIVE RESULTS</div><h1>Results & Winners</h1><p class="lead">Choose an event to view its live results.</p></div><div class="event-badge"><span>🏆</span><b>Live Results</b><small>Ambience Courtyard</small></div></div>
+<div id="mobile-menu" class="mobile-menu" hidden><div class="mobile-menu-section-label">RESULTS PAGE</div><a href="#results">🎯 Game-wise Results</a><div class="mobile-menu-section-label">SITE</div><a href="qa.html">❓ Q&amp;A</a><a href="index.html#events">🎯 Events</a><a href="index.html#schedule">📅 Schedule</a><a href="results.html">🏆 Event Results</a><a href="rules.html">📋 Rules &amp; Regulations</a><a href="highlights-2025.html">📸 2025 Highlights</a><a href="partners.html">🤝 Event Partners</a><a href="index.html#volunteer-registration">🤝 Register as Volunteer</a><a href="index.html#sponsorship">🏏 Sponsorship</a><a href="index.html#guidelines">🛡️ Guidelines</a><a href="index.html#rules">📋 Rules</a></div>
+<div class="event-hero"><div><div class="eyebrow">EVENT RESULTS</div><h1>Results & Winners</h1><p class="lead">Choose an event to view its event results.</p></div><div class="event-badge"><span>🏆</span><b>Event Results</b><small>Ambience Courtyard</small></div></div>
 </header>
 <main>
 <section id="results"><div class="title"><small>RESULTS SESSION</small><h2>Event Results</h2><p>Results are maintained in each event's own Google Sheet and are shown on that event page.</p></div><div id="results-event-grid" class="grid"></div></section>
@@ -39,9 +39,9 @@
 <script>
 (function(){
  const box=document.getElementById('results-event-grid');
- if(!box || typeof events==='undefined') return;
- box.innerHTML=events.map(e=>`<a class="card event-card" href="event.html?game=${encodeURIComponent(e[3])}#results"><div class="emoji">${e[0]}</div><h3>${e[1]}</h3><p>${e[2]}</p><span class="card-link">View live results →</span></a>`).join('');
+ if(box && typeof events!=='undefined') box.innerHTML=events.map(e=>`<a class="card event-card" href="event.html?game=${encodeURIComponent(e[3])}#results"><div class="emoji">${e[0]}</div><h3>${e[1]}</h3><p>${e[2]}</p><span class="card-link">View event results →</span></a>`).join('');
 })();
+
 </script>
 <script src="visitor-counter.js"></script>
 </body></html>

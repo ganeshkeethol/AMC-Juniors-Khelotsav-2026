@@ -337,7 +337,7 @@ section.register .btn{background:linear-gradient(135deg,#f47a20,#d9283e) !import
   .volunteer-list li{font-size:12px}
 }
 
-/* Homepage volunteer registration section + live results navigation */
+/* Homepage volunteer registration section + event results navigation */
 .live-results-nav{background:linear-gradient(135deg,#d9283e,#f47a20)!important;color:#fff!important}
 .volunteer-registration-section{padding:54px 5%;background:linear-gradient(135deg,#102a5c 0%,#174ea6 55%,#2166d1 100%);border-top:6px solid #f5b72f}
 .volunteer-registration-card{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1.5fr .8fr;gap:28px;align-items:center;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.24);border-radius:24px;padding:32px;box-shadow:0 12px 30px rgba(7,25,66,.18)}
@@ -1218,7 +1218,7 @@ section.volunteer-registration-section .volunteer-registration-badge small{
   .homepage-rules-btn{padding:9px 11px;font-size:10.5px;}
 }
 
-/* Live Results page: show event cards three across on desktop and mobile. */
+/* Event Results page: show event cards three across on desktop and mobile. */
 #results-event-grid{
   grid-template-columns:repeat(3,minmax(0,1fr)) !important;
   gap:14px !important;
@@ -1822,49 +1822,6 @@ section#register.register .steps{gap:11px;}
   pointer-events:none !important;
 }
 
-/* Falling sports emojis: festive, subtle, and non-interactive across the site. */
-#falling-sports-emojis{
-  position:fixed;
-  inset:0;
-  z-index:899;
-  pointer-events:none;
-  overflow:hidden;
-}
-.falling-sports-emoji{
-  position:absolute;
-  left:var(--x);
-  top:-40px;
-  font-size:var(--size);
-  line-height:1;
-  opacity:.92;
-  filter:saturate(1.45) drop-shadow(0 3px 4px rgba(10,35,90,.24));
-  text-shadow:0 0 10px rgba(255,255,255,.45);
-  animation:fallingSportsEmoji var(--duration) linear var(--delay) infinite;
-  will-change:transform;
-  user-select:none;
-}
-@keyframes fallingSportsEmoji{
-  0%{transform:translate3d(0,-60px,0) rotate(0deg);}
-  25%{transform:translate3d(var(--drift),25vh,0) rotate(90deg);}
-  50%{transform:translate3d(calc(var(--drift) * -1),50vh,0) rotate(180deg);}
-  75%{transform:translate3d(var(--drift),75vh,0) rotate(270deg);}
-  100%{transform:translate3d(0,110vh,0) rotate(360deg);}
-}
-@media(max-width:550px){
-  #falling-sports-emojis{z-index:899;display:block!important;}
-  .falling-sports-emoji{opacity:.82;font-size:calc(var(--size) + 1px);filter:saturate(1.5) drop-shadow(0 3px 4px rgba(10,35,90,.22));text-shadow:0 0 8px rgba(255,255,255,.38);}
-}
-@media(prefers-reduced-motion:reduce){
-  #falling-sports-emojis{display:block!important;}
-  .falling-sports-emoji-static{top:var(--static-y)!important;animation:none!important;transform:none!important;opacity:.78!important;}
-}
-
-/* Mobile visibility: keep the decorative sports emojis above page content and below menus. */
-@media(max-width:550px){
-  #falling-sports-emojis{z-index:899!important;display:block!important;}
-  .falling-sports-emoji{opacity:.98!important;font-size:calc(var(--size) + 2px)!important;}
-}
-
 /* Final Event Team layout: one SPOC with contact details + names-only list for everyone else. */
 #spoc-card.spoc-card{
   display:grid !important;
@@ -2441,4 +2398,60 @@ section#register .enrollment-whatsapp-btn:hover{filter:brightness(1.06)}
   #event-gallery .gallery-count { margin-top: 3px !important; }
   #events { padding-top: 14px !important; }
   #events > .title { margin-top: 0 !important; }
+}
+
+
+/* Mobile-only quick access to Kids Registration Search below the start date. */
+.hero-registration-search-btn{display:none;}
+@media (max-width:550px){
+  .hero-info-panel{
+    flex-direction:column !important;
+    gap:7px !important;
+    padding:8px 6px !important;
+    text-align:center !important;
+  }
+  /* On mobile, replace the event start-date label with quick-access buttons. */
+  .hero-info-panel #event-date-display{display:none !important;}
+  .hero-registration-search-btn{
+    display:inline-flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    width:100% !important;
+    max-width:100% !important;
+    box-sizing:border-box !important;
+    padding:7px 5px !important;
+    border-radius:9px !important;
+    background:linear-gradient(135deg,#2563eb,#38bdf8) !important;
+    color:#fff !important;
+    border:1px solid rgba(255,255,255,.9) !important;
+    font-size:10px !important;
+    font-weight:800 !important;
+    line-height:1.15 !important;
+    text-decoration:none !important;
+    box-shadow:0 2px 7px rgba(0,0,0,.12) !important;
+  }
+}
+
+
+/* Mobile hero quick links: registration search and event results. */
+.hero-live-results-btn{display:none;}
+@media (max-width:550px){
+  .hero-live-results-btn{
+    display:inline-flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    width:100% !important;
+    max-width:100% !important;
+    box-sizing:border-box !important;
+    padding:7px 5px !important;
+    border-radius:9px !important;
+    background:linear-gradient(135deg,#2563eb,#38bdf8) !important;
+    color:#fff !important;
+    border:1px solid rgba(255,255,255,.9) !important;
+    font-size:10px !important;
+    font-weight:800 !important;
+    line-height:1.15 !important;
+    text-decoration:none !important;
+    box-shadow:0 2px 7px rgba(0,0,0,.12) !important;
+  }
 }
