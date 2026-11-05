@@ -33,15 +33,61 @@
 </header>
 <main>
 <section id="results"><div class="title"><small>RESULTS SESSION</small><h2>Event Results</h2><p>Results are maintained in each event's own Google Sheet and are shown on that event page.</p></div><div id="results-event-grid" class="grid"></div></section>
+<section id="medal-dashboard" class="medal-dashboard" aria-labelledby="medal-title">
+  <div class="title"><small>MEDAL DASHBOARD</small><h2 id="medal-title">Block-wise Medal Tally</h2><p>Consolidated medals across all published event results.</p></div>
+  <p class="muted" style="margin:0 0 12px">Tap a block to view children and the events in which they received medals.</p>
+  <div id="medal-dashboard-content" class="medal-dashboard-grid"><p class="muted">Loading medal tally…</p></div>
+</section>
+<section id="results"><div class="title"><small>RESULTS SESSION</small><h2>Event Results</h2><p>Results are maintained in each event's own Google Sheet and are shown on that event page.</p></div><div id="results-event-grid" class="grid"></div></section>
 </main>
 <footer><div class="footer-brand"><img src="assets/apartment-logo.jpg" alt="Ambience Courtyard logo"><div><b>AMC Juniors Khelotsav 2026</b><span>Ambience Courtyard</span></div></div><span id="visitor-count" class="visitor-count" aria-label="Site visitor count">👀 Visitors: …</span><span>From <span id="footer-event-date">November 1st onwards</span> • 14 Sports & Fun Events</span></footer>
 <script src="config.js"></script><script src="app.js"></script>
+<style>
+.medal-dashboard{margin:24px 0 36px}.medal-dashboard-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}.medal-block-card{background:#fff;border:1px solid #dbe5f2;border-radius:16px;padding:16px;box-shadow:0 5px 18px rgba(18,59,115,.07)}.medal-block-card h3{margin:0 0 12px;color:#123b73;font-size:1.15rem}.medal-counts{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;text-align:center}.medal-counts span{display:block;font-size:1.25rem;font-weight:800}.medal-counts small{display:block;color:#52647b;font-size:.75rem}.medal-total{margin-top:12px;padding-top:10px;border-top:1px solid #e5edf6;font-weight:700;color:#243b5a}.medal-dashboard .muted{color:#52647b}.medal-dashboard-error{color:#8a3b24;background:#fff7f2;border:1px solid #f2d4c7;padding:12px;border-radius:12px}.top-medal-collector{grid-column:1/-1;background:linear-gradient(135deg,#fff8e6,#fff);border-color:#e9c96c}.top-medal-collector h3{font-size:1.25rem}.medal-block-card.clickable-block{cursor:pointer;transition:transform .15s,box-shadow .15s}.medal-block-card.clickable-block:hover,.medal-block-card.clickable-block:focus{transform:translateY(-2px);box-shadow:0 8px 22px rgba(18,59,115,.14);outline:2px solid #9bbce8;outline-offset:2px}.block-medal-details{grid-column:1/-1;background:#f7faff;border:1px solid #cbdcf1;border-radius:16px;padding:16px}.block-medal-details h3{margin:0 0 12px;color:#123b73}.block-medal-list{display:grid;gap:9px}.block-medal-row{display:grid;grid-template-columns:minmax(130px,1.2fr) minmax(120px,1fr) auto;gap:10px;align-items:center;background:#fff;border:1px solid #e1eaf5;border-radius:10px;padding:10px 12px}.block-medal-row strong{color:#173b68}.block-medal-row small{color:#52647b}.block-medal-badge{font-weight:800;white-space:nowrap}@media(max-width:600px){.block-medal-row{grid-template-columns:1fr auto}.block-medal-row small{grid-column:1}.block-medal-badge{grid-column:2;grid-row:1/3;align-self:center}}.top-collector-name{font-size:1.35rem;font-weight:850;color:#123b73;margin:4px 0 8px}.top-collector-meta{color:#52647b;font-size:.9rem}@media(max-width:600px){.medal-dashboard-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.medal-block-card{padding:12px}.medal-block-card h3{font-size:1rem}.medal-counts span{font-size:1.1rem}}
+</style>
 <script>
 (function(){
  const box=document.getElementById('results-event-grid');
  if(box && typeof events!=='undefined') box.innerHTML=events.map(e=>`<a class="card event-card" href="event.html?game=${encodeURIComponent(e[3])}#results"><div class="emoji">${e[0]}</div><h3>${e[1]}</h3><p>${e[2]}</p><span class="card-link">View event results →</span></a>`).join('');
 })();
 
+(async function loadMedalDashboard(){
+ const host=document.getElementById('medal-dashboard-content');
+ if(!host || !window.CONFIG || !CONFIG.apiUrl){if(host)host.innerHTML='<p class="medal-dashboard-error">Results connection is not configured.</p>';return;}
+ const get=async(url)=>{const response=await fetch(url,{cache:'no-store'});if(!response.ok)throw new Error('HTTP '+response.status);return response.json();};
+ const base=CONFIG.apiUrl;
+ try{
+   const refData=await get(base+'?action=references&_='+Date.now());
+   const refs=(refData.references||[]).filter(r=>/^(yes|true|1)$/i.test(String(r.active||'Yes')));
+   if(!refs.length)throw new Error('No active events were found in References.');
+   const totals={};
+   const collectors={};
+   const medalDetails={};
+   await Promise.all(refs.map(async ref=>{
+     const name=String(ref.sport||ref.Sport||'').trim();if(!name)return;
+     const payload=await get(base+'?action=sport&sport='+encodeURIComponent(name)+'&_='+Date.now());
+     (payload.data&&payload.data.results||[]).forEach(row=>{
+       const pick=(...keys)=>{for(const key of keys){const found=Object.keys(row||{}).find(k=>k.trim().toLowerCase()===key.toLowerCase());if(found && String(row[found]||'').trim())return String(row[found]).trim();}return '';};
+       const block=pick('Block');const medal=pick('Medal');
+       const m=medal.toLowerCase();if(!['gold','silver','bronze'].includes(m))return;
+       if(block){if(!totals[block])totals[block]={gold:0,silver:0,bronze:0};totals[block][m]++;}
+       const child=pick('Child Name','Name','Participant Name');
+       if(child){const flat=pick('Flat Number','Flat No','Flat');const key=(child+'|'+block+'|'+flat).toLowerCase();if(!collectors[key])collectors[key]={name:child,block:block,flat:flat,gold:0,silver:0,bronze:0};collectors[key][m]++;
+         if(block){if(!medalDetails[block])medalDetails[block]=[];medalDetails[block].push({name:child,flat:flat,event:name,medal:m});}
+       }
+     });
+   }));
+   const rows=Object.entries(totals).map(([block,v])=>({block,...v,total:v.gold+v.silver+v.bronze})).sort((a,b)=>b.gold-a.gold||b.silver-a.silver||b.bronze-a.bronze||a.block.localeCompare(b.block,undefined,{numeric:true}));
+   if(!rows.length){host.innerHTML='<p class="muted">No published medal results are available yet.</p>';return;}
+   const overall=rows.reduce((sum,r)=>({gold:sum.gold+r.gold,silver:sum.silver+r.silver,bronze:sum.bronze+r.bronze,total:sum.total+r.total}),{gold:0,silver:0,bronze:0,total:0});
+   const overallCard=`<article class="medal-block-card overall-medal-summary"><h3>Overall Medal Tally</h3><div class="medal-counts"><div><span>🥇 ${overall.gold}</span><small>Gold</small></div><div><span>🥈 ${overall.silver}</span><small>Silver</small></div><div><span>🥉 ${overall.bronze}</span><small>Bronze</small></div></div><div class="medal-total">Total medals: ${overall.total}</div></article>`;
+   const topCollector=Object.values(collectors).map(c=>({...c,total:c.gold+c.silver+c.bronze})).sort((a,b)=>b.total-a.total||b.gold-a.gold||b.silver-a.silver||b.bronze-a.bronze||a.name.localeCompare(b.name))[0];
+   const topCollectorCard=topCollector?`<article class="medal-block-card top-medal-collector"><h3>🏆 Overall Top Medal Collector</h3><div class="top-collector-name">${escapeHtml(topCollector.name)}</div><div class="top-collector-meta">${topCollector.block?'Block '+escapeHtml(topCollector.block)+' · ':''}${topCollector.flat?'Flat '+escapeHtml(topCollector.flat)+' · ':''}${topCollector.total} medals · 🥇 ${topCollector.gold} Gold · 🥈 ${topCollector.silver} Silver · 🥉 ${topCollector.bronze} Bronze</div></article>`:'';
+   host.innerHTML=topCollectorCard+overallCard+rows.map((r,i)=>`<article class="medal-block-card clickable-block" role="button" tabindex="0" data-block="${escapeHtml(r.block)}" aria-expanded="false"><h3>${i+1}. Block ${escapeHtml(r.block)} <small style="font-size:.72rem;font-weight:600;color:#52647b">· View children ↓</small></h3><div class="medal-counts"><div><span>🥇 ${r.gold}</span><small>Gold</small></div><div><span>🥈 ${r.silver}</span><small>Silver</small></div><div><span>🥉 ${r.bronze}</span><small>Bronze</small></div></div><div class="medal-total">Total medals: ${r.total}</div></article>`).join('');
+   host.querySelectorAll('.clickable-block').forEach(card=>{const activate=()=>{const block=card.getAttribute('data-block');const existing=host.querySelector('.block-medal-details');host.querySelectorAll('.clickable-block').forEach(c=>c.setAttribute('aria-expanded','false'));if(existing && existing.getAttribute('data-for')===block){existing.remove();return;}if(existing)existing.remove();card.setAttribute('aria-expanded','true');const list=(medalDetails[block]||[]).slice().sort((a,b)=>a.name.localeCompare(b.name)||a.event.localeCompare(b.event));const panel=document.createElement('section');panel.className='block-medal-details';panel.setAttribute('data-for',block);panel.innerHTML=`<h3>Block ${escapeHtml(block)} – Medal Winners</h3>`+(list.length?`<div class="block-medal-list">${list.map(d=>`<div class="block-medal-row"><strong>${escapeHtml(d.name)}</strong><small>${d.flat?'Flat '+escapeHtml(d.flat)+' · ':''}${escapeHtml(d.event)}</small><span class="block-medal-badge">${d.medal==='gold'?'🥇 Gold':d.medal==='silver'?'🥈 Silver':'🥉 Bronze'}</span></div>`).join('')}</div>`:'<p class="muted">No child medal details found for this block.</p>');card.insertAdjacentElement('afterend',panel);};card.addEventListener('click',activate);card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();activate();}});});
+ }catch(error){host.innerHTML='<p class="medal-dashboard-error">Unable to load medal tally. Please refresh the page. '+escapeHtml(error.message||'')+'</p>';}
+ function escapeHtml(value){return String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+})();
 </script>
 <script src="visitor-counter.js"></script>
 </body></html>
