@@ -61,7 +61,9 @@ if(eventGrid) eventGrid.innerHTML=events.map(e=>`<a class="card event-card" href
   const dots=document.getElementById('notifications-dots');
   const prev=document.querySelector('.notification-prev');
   const next=document.querySelector('.notification-next');
-  if(!track || !dots || !window.CONFIG) return;
+  // The ticker no longer uses carousel dots or arrow controls. Do not gate
+  // notification loading on those removed elements.
+  if(!track || !window.CONFIG) return;
 
   const clean=v=>String(v==null?'':v).trim();
   const pick=(r,...keys)=>{
@@ -109,36 +111,37 @@ if(eventGrid) eventGrid.innerHTML=events.map(e=>`<a class="card event-card" href
     return normalizeRows(parseGviz(await r.text()));
   }
 
-  let items=[], index=0, timer=null;
+  let items=[];
   const render=()=>{
     if(!items.length){
       track.innerHTML='<div class="notification-empty"><b>No important notifications yet.</b><span>New announcements will appear here when organisers publish them.</span></div>';
-      dots.innerHTML=''; if(prev) prev.hidden=true; if(next) next.hidden=true; return;
+      return;
     }
-    if(prev) prev.hidden=false; if(next) next.hidden=false;
-    track.innerHTML=items.map((r,i)=>{
+    const makeGroup=()=>items.map(r=>{
       const title=pick(r,'Title','Notification','Heading','Name')||'Important Update';
       const message=pick(r,'Message','Description','Details','Content','Text');
       const date=pick(r,'Date','Publish Date','Published On');
       const link=pick(r,'Link','URL','Url','Action URL');
-      const button=pick(r,'Button Text','CTA','Action')||'View details';
-      return `<article class="notification-card${i===0?' active':''}" data-index="${i}"><div class="notification-body"><div class="notification-meta">${date?`<span>📅 ${escapeHtml(date)}</span>`:''}</div><h3>${escapeHtml(title)}</h3>${message?`<p>${escapeHtml(message)}</p>`:''}${link?`<a class="notification-link" href="${escapeHtml(link)}" target="_blank" rel="noopener">${escapeHtml(button)} →</a>`:''}</div></article>`;
-    }).join('');
-    dots.innerHTML=items.map((_,i)=>`<button type="button" class="notification-dot${i===0?' active':''}" aria-label="Show notification ${i+1}" data-index="${i}"></button>`).join('');
-    update();
+      const content=`<span class="ticker-date">${date?`📅 ${escapeHtml(date)}`:''}</span><strong>${escapeHtml(title)}</strong>${message?`<span class="ticker-message">${escapeHtml(message)}</span>`:''}`;
+      return link?`<a class="notification-ticker-item" href="${escapeHtml(link)}" target="_blank" rel="noopener">${content}<span class="ticker-arrow" aria-hidden="true">↗</span></a>`:`<div class="notification-ticker-item">${content}</div>`;
+    }).join('<span class="ticker-separator" aria-hidden="true">✦</span>');
+    const group=makeGroup();
+    track.innerHTML=`<div class="notification-ticker-group">${group}</div><div class="notification-ticker-group" aria-hidden="true">${group}</div>`;
   };
-  const update=()=>{
-    const cards=track.querySelectorAll('.notification-card');
-    cards.forEach((c,i)=>c.classList.toggle('active',i===index));
-    dots.querySelectorAll('.notification-dot').forEach((d,i)=>d.classList.toggle('active',i===index));
-    if(cards[index]) track.scrollTo({left:cards[index].offsetLeft-track.offsetLeft,behavior:'smooth'});
-  };
-  const move=delta=>{ if(!items.length)return; index=(index+delta+items.length)%items.length; update(); restart(); };
-  const restart=()=>{ if(timer) clearInterval(timer); if(items.length>1 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) timer=setInterval(()=>move(1),7000); };
-  prev?.addEventListener('click',()=>move(-1)); next?.addEventListener('click',()=>move(1));
-  dots.addEventListener('click',e=>{const b=e.target.closest('.notification-dot'); if(!b)return; index=Number(b.dataset.index)||0; update(); restart();});
-  fetchNotifications().then(rows=>{items=rows.slice(0,12); render(); restart();}).catch(()=>render());
-  document.addEventListener('visibilitychange',()=>{if(document.hidden){if(timer)clearInterval(timer);}else restart();});
+  async function refresh(){
+    try{
+      const rows=await fetchNotifications();
+      items=rows.slice(0,12);
+      render();
+    }catch(error){
+      if(!items.length) render();
+      console.warn('Important updates could not be refreshed:', error);
+    }
+  }
+  refresh();
+  // Keep the ticker in sync with sheet edits while the page remains open.
+  window.setInterval(refresh, Math.max(30000, Number(CONFIG.refreshSeconds)||60)*1000);
+
 })();
 
 
@@ -226,7 +229,9 @@ if(eventGrid) eventGrid.innerHTML=events.map(e=>`<a class="card event-card" href
   const prev=document.querySelector('.gallery-prev');
   const next=document.querySelector('.gallery-next');
   const carousel=document.querySelector('.event-gallery-carousel');
-  if(!track || !dots || !window.CONFIG) return;
+  // The ticker no longer uses carousel dots or arrow controls. Do not gate
+  // notification loading on those removed elements.
+  if(!track || !window.CONFIG) return;
 
   let images=[], index=0, timer=null;
   const esc=v=>String(v==null?'':v).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
