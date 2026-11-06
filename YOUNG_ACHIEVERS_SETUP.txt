@@ -1,0 +1,16 @@
+AMC YOUNG ACHIEVERS 2026 – GOOGLE SHEET SETUP
+
+In the existing “AMC Khelotsav 2026 - High Level Schedule” spreadsheet, create a tab named exactly:
+Young Achievers
+
+Use these exact column headings in row 1:
+Kids Name | Parent Name | Block | Flat No | Description of Achievement | Photo
+
+Optional columns:
+Active (Yes/No; blank defaults to Yes) | Display Order (smaller numbers appear first)
+
+Photo should contain a publicly viewable image URL. For Google Drive photos, set General access to “Anyone with the link – Viewer”. Prefer a direct image URL or a Drive image URL that can be embedded.
+
+After adding the Code.gs changes, save and deploy a NEW version of the Apps Script Web App. Keep the same deployment URL used in config.js.
+
+The website page is young-achievers.html and is linked from the site navigation.

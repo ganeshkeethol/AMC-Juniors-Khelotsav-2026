@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#123b73"><title>AMC Young Achievers 2026 • AMC Juniors Khelotsav</title>
+<meta name="description" content="Celebrating the young achievers of Ambience Courtyard.">
+<link rel="stylesheet" href="style.css">
+<style>
+/* Young Achievers – spacious, photo-first cards */
+.achievers-main{max-width:1120px;margin:0 auto;padding:30px 22px 58px}
+.achievers-intro{max-width:760px;margin:0 auto 30px;text-align:center;color:#526b91;font-size:1.08rem;line-height:1.65}
+.achiever-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:26px;align-items:stretch}
+.achiever-card{min-width:0;overflow:hidden;background:#fff;border:1px solid #d9e5f3;border-radius:22px;box-shadow:0 12px 32px rgba(18,59,115,.10);transition:transform .2s ease,box-shadow .2s ease}
+.achiever-card:hover{transform:translateY(-3px);box-shadow:0 18px 38px rgba(18,59,115,.15)}
+.achiever-photo-wrap{height:350px;padding:14px;background:linear-gradient(145deg,#edf7ff,#fff9ec);display:flex;align-items:center;justify-content:center;border-bottom:1px solid #e5edf6}
+.achiever-photo{display:block;width:100%;height:100%;object-fit:contain;object-position:center;background:transparent;border-radius:12px}
+.achiever-photo-placeholder{width:100%;height:100%;display:grid;place-items:center;border-radius:12px;background:linear-gradient(135deg,#eaf4ff,#fff5df);font-size:4rem;color:#f5a623}
+.achiever-body{padding:22px 24px 24px}
+.achiever-body h2{font-size:1.35rem;line-height:1.3;color:#123b73;margin:0 0 10px}
+.achiever-meta{display:flex;flex-wrap:wrap;gap:7px 10px;color:#536d91;font-size:.9rem;line-height:1.5;margin:0 0 14px}
+.achiever-description{color:#344b68;font-size:1rem;line-height:1.7;margin:0;padding-top:13px;border-top:1px solid #edf1f6;white-space:pre-line}
+.achiever-empty{grid-column:1/-1;text-align:center;padding:32px;background:#f7faff;border:1px dashed #cbd8e8;border-radius:16px;color:#5d7396}
+.achiever-error{color:#8a3b24;background:#fff7f2;border:1px solid #f2d4c7;padding:14px;border-radius:12px}
+@media(max-width:700px){.achievers-main{padding:20px 14px 40px}.achievers-intro{font-size:1rem;margin-bottom:22px}.achiever-grid{grid-template-columns:minmax(0,1fr);gap:18px}.achiever-photo-wrap{height:clamp(260px,78vw,390px);padding:12px}.achiever-body{padding:18px 18px 20px}.achiever-body h2{font-size:1.22rem}.achiever-description{font-size:.96rem}}
+@media(prefers-reduced-motion:reduce){.achiever-card{transition:none}.achiever-card:hover{transform:none}}
+</style></head><body>
+<img class="site-floating-logo" src="assets/ambience-courtyard-logo-transparent.png" alt="Ambience Courtyard" aria-hidden="true">
+<header class="subhero"><nav><a class="brand" href="index.html"><span>AMC Juniors Khelotsav 2026</span></a><div class="subnav-actions"><a class="back-link" href="index.html">← Home</a><button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">☰</button></div></nav>
+<div id="mobile-menu" class="mobile-menu" hidden><a href="index.html#events">🎯 Events</a><a href="index.html#schedule">📅 Schedule</a><a href="results.html">🏆 Event Results</a><a href="young-achievers.html">🌟 AMC Young Achievers 2026</a><a href="registration-search.html">👧 Kids Registration Search</a><a href="qa.html">❓ Q&amp;A</a><a href="rules.html">📋 Rules &amp; Regulations</a></div>
+<div class="event-hero"><div><div class="eyebrow">CELEBRATING EXCELLENCE</div><h1>AMC Young Achievers 2026</h1><p class="lead">Celebrating the talent, dedication and wonderful achievements of our young stars.</p></div><div class="event-badge"><span>🌟</span><b>Young Achievers</b><small>Ambience Courtyard</small></div></div></header>
+<main class="achievers-main"><p class="achievers-intro">Meet our young achievers and celebrate their special accomplishments.</p><section id="achiever-grid" class="achiever-grid" aria-live="polite"><div class="achiever-empty">Loading young achievers…</div></section></main>
+<footer><div class="footer-brand"><img src="assets/apartment-logo.jpg" alt="Ambience Courtyard logo"><div><b>AMC Juniors Khelotsav 2026</b><span>Ambience Courtyard</span></div></div><span>AMC Young Achievers 2026</span></footer>
+<script src="config.js"></script><script src="app.js"></script><script>
+(async function(){const host=document.getElementById('achiever-grid');const esc=v=>String(v||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));try{const url=CONFIG.apiUrl+'?action=youngAchievers&_='+Date.now();const res=await fetch(url,{cache:'no-store'});if(!res.ok)throw new Error('HTTP '+res.status);const data=await res.json();const items=data.achievers||[];if(!items.length){host.innerHTML='<div class="achiever-empty">No young achievers have been added yet. Please check back soon.</div>';return;}host.innerHTML=items.map(x=>{const photo=esc(x.photo);return `<article class="achiever-card">${photo?`<div class="achiever-photo-wrap"><img class="achiever-photo" src="${photo}" alt="${esc(x.name)}" loading="lazy" onerror="if(!this.dataset.fallbackTried){this.dataset.fallbackTried='1';const m=this.src.match(/[?&]id=([^&]+)/);if(m){this.src='https://lh3.googleusercontent.com/d/'+m[1];}else{this.style.display='none';this.parentElement.querySelector('.achiever-photo-placeholder').style.display='grid';}}else{this.style.display='none';this.parentElement.querySelector('.achiever-photo-placeholder').style.display='grid';}"><div class="achiever-photo-placeholder" style="display:none">🌟</div></div>`:'<div class="achiever-photo-wrap"><div class="achiever-photo-placeholder">🌟</div></div>'}<div class="achiever-body"><h2>${esc(x.name)}</h2><p class="achiever-meta">${x.parentName?'Parent: '+esc(x.parentName)+' · ':''}${x.block?'Block '+esc(x.block):''}${x.flatNo?' · Flat '+esc(x.flatNo):''}</p><p class="achiever-description">${esc(x.achievement)}</p></div></article>`;}).join('');}catch(err){host.innerHTML='<div class="achiever-error">Unable to load young achievers. Please refresh the page.</div>';}})();
+</script><script src="visitor-counter.js"></script></body></html>

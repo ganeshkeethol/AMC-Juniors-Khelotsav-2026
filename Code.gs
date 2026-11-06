@@ -13,6 +13,7 @@ const HIGH_LEVEL_SCHEDULE_TAB = "Schedule";
 const NOTIFICATIONS_TAB = "Notifications";
 const QA_TAB = "Q&A";
 const RULES_TAB = "Rules";
+const YOUNG_ACHIEVERS_TAB = "Young Achievers";
 
 // Create a separate Google Sheet for the public site visitor counter.
 const VISITOR_STATS_SHEET_ID = "1S0atryLkUYAQFYihyDqu8zi024dcgsV5Tzcs4g3gDoc";
@@ -74,6 +75,10 @@ function doGet(e) {
 
     if (action === "rules") {
       return jsonOutput({success:true, rules:getRules_()});
+    }
+
+    if (action === "youngAchievers") {
+      return jsonOutput({success:true, achievers:getYoungAchievers_()});
     }
 
     if (action === "partners" || action === "eventPartners") {
@@ -512,4 +517,52 @@ function getRules_() {
   } catch (error) {
     return [];
   }
+}
+
+
+/** Public AMC Young Achievers data from the Young Achievers tab.
+ * Columns: Kids Name, Parent Name, Block, Flat No, Description of Achievement, Photo.
+ * Optional Active column can be used to hide a record (Yes/No).
+ */
+function getYoungAchievers_() {
+  if (!HIGH_LEVEL_SCHEDULE_SHEET_ID || HIGH_LEVEL_SCHEDULE_SHEET_ID.indexOf("PASTE_") === 0) return [];
+  try {
+    const ss = SpreadsheetApp.openById(HIGH_LEVEL_SCHEDULE_SHEET_ID);
+    const sheet = ss.getSheetByName(YOUNG_ACHIEVERS_TAB);
+    if (!sheet) return [];
+    return sheetToObjects_(sheet).map(function(r, idx) {
+      const active = String(r.Active || r.active || "Yes").trim();
+      return {
+        name: String(r["Kids Name"] || r["Child Name"] || r.Name || "").trim(),
+        parentName: String(r["Parent Name"] || "").trim(),
+        block: String(r.Block || "").trim(),
+        flatNo: String(r["Flat No"] || r["Flat Number"] || r.Flat || "").trim(),
+        achievement: String(r["Description of Achievement"] || r.Achievement || r.Description || "").trim(),
+        photo: normalizeAchieverPhotoUrl_(r.Photo || r["Photo URL"] || r["Image URL"] || ""),
+        displayOrder: Number(r["Display Order"] || r.Order || idx + 1) || idx + 1,
+        active: active
+      };
+    }).filter(function(x) {
+      return x.name && /^(yes|true|1|active|published|show)$/i.test(x.active);
+    }).sort(function(a, b) { return a.displayOrder - b.displayOrder || a.name.localeCompare(b.name); });
+  } catch (error) {
+    return [];
+  }
+}
+
+/** Convert common Google Drive share links into embeddable image URLs.
+ * The Drive file must be shared as Anyone with the link - Viewer.
+ */
+function normalizeAchieverPhotoUrl_(value) {
+  var url = String(value || "").trim();
+  if (!url) return "";
+  var id = "";
+  var match = url.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/);
+  if (match) id = match[1];
+  if (!id) {
+    match = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+    if (match && /drive\.google\.com/.test(url)) id = match[1];
+  }
+  if (id) return "https://drive.google.com/thumbnail?id=" + encodeURIComponent(id) + "&sz=w1200";
+  return url;
 }
