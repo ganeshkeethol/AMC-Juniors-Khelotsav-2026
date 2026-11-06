@@ -2607,3 +2607,104 @@ section#register .enrollment-whatsapp-btn:hover{filter:brightness(1.06)}
   .hero nav{padding-top:5px !important;padding-bottom:1px !important}
   .hero-inner-reordered{padding-top:3px !important}
 }
+
+
+/* Actual-phone responsive correction: prevent hero content from expanding viewport */
+@media screen and (max-width: 700px) {
+  html, body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden !important;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+
+  .hero {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+  }
+  .hero nav {
+    width: 100%;
+    max-width: 100%;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+  .hero-inner-reordered {
+    display: grid !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    grid-template-columns: minmax(0, 1fr) minmax(88px, 29%) !important;
+    align-items: center !important;
+    gap: 8px !important;
+    padding: 10px 12px 13px !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+  }
+  .hero-copy {
+    min-width: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+  .hero-copy .eyebrow {
+    max-width: 100% !important;
+    font-size: clamp(6px, 1.8vw, 8px) !important;
+    line-height: 1.2 !important;
+    letter-spacing: .65px !important;
+    overflow-wrap: anywhere;
+  }
+  .hero-copy h1 {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    font-size: clamp(13px, 4.1vw, 20px) !important;
+    line-height: 1.05 !important;
+    letter-spacing: -1px !important;
+    white-space: nowrap !important;
+    margin: 4px 0 6px !important;
+    overflow: hidden !important;
+    text-overflow: clip !important;
+  }
+  .hero-copy .lead {
+    max-width: 100% !important;
+    font-size: clamp(8px, 2.5vw, 11px) !important;
+    line-height: 1.25 !important;
+    margin: 0 !important;
+    overflow-wrap: anywhere !important;
+  }
+  .hero-event-logo {
+    display: flex !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: auto !important;
+    padding: 4px !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+  }
+  .hero-event-logo img {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    max-height: 112px !important;
+    aspect-ratio: 1 / 1 !important;
+    object-fit: contain !important;
+    border-radius: 8px !important;
+  }
+  .site-floating-logo {
+    max-width: 34vw !important;
+    height: auto !important;
+    opacity: .22 !important;
+  }
+}
+@media screen and (max-width: 380px) {
+  .hero-inner-reordered {
+    grid-template-columns: minmax(0, 1fr) minmax(78px, 27%) !important;
+    gap: 6px !important;
+    padding: 8px 9px 11px !important;
+  }
+  .hero-copy h1 { font-size: clamp(12px, 3.9vw, 16px) !important; }
+  .hero-event-logo img { max-height: 94px !important; }
+}
